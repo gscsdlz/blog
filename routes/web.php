@@ -11,8 +11,21 @@
 |
 */
 
-Route::get('/', function () {
-    return view('index');
-});
+Route::get('/', 'IndexController@index');
 
 Route::any('/test', 'IndexController@test');
+
+Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function(){
+    Route::get('/', 'Admin\IndexController@login');
+    Route::post('checkEmail', 'IndexController@checkEmail');
+    Route::post('login', 'IndexController@doLogin');
+});
+
+Route::group(['prefix' => 'admin', 'middleware' => 'admin', 'namespace' => 'Admin'], function(){
+    Route::get('index', function(){
+        return view('admin.layout');
+    });
+    Route::get('blog/edit', 'BlogController@edit');
+    Route::post('imgUpload', 'UploadController@image');
+
+});
