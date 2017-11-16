@@ -139,11 +139,11 @@ return [
         | 主要用于网站配置信息等
         |
         */
-        'blog' => [
+        'setting' => [
             'host' => env('REDIS_HOST', '127.0.0.1'),
             'password' => env('REDIS_PASSWORD', null),
             'port' => env('REDIS_PORT', 6379),
-            'database' => 4,
+            'database' => 3,
         ],
 
     ],
