@@ -1,0 +1,13 @@
+/node_modules
+/public/storage
+/public/hot
+/storage/*.key
+/vendor
+/public/css
+/public/js
+/public/i
+/public/fonts
+/.idea
+Homestead.json
+Homestead.yaml
+.env
