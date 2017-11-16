@@ -11,6 +11,10 @@
     <meta http-equiv="Cache-Control" content="no-siteapp"/>
     <link rel="icon" type="image/png" href="{{ URL::asset('/i/favicon.png') }}">
     <link rel="stylesheet" href="{{ URL::asset('/css/amazeui.min.css') }}">
+    <link rel="stylesheet" href="{{ URL::asset('ext/meditor/css/editormd.min.css') }}">
+    <script src="{{ URL::asset("/js/jquery.min.js") }}"></script>
+    <script src="{{ URL::asset("/js/amazeui.min.js") }}"></script>
+    <script src="{{ URL::asset("/ext/meditor/editormd.min.js") }}"></script>
 </head>
 
 <body>
@@ -18,20 +22,31 @@
     <h1 class="am-topbar-brand">
         <a href="#">后台管理</a>
     </h1>
-    <div class="am-collapse am-topbar-collapse am-topbar-right" id="doc-topbar-collapse">
+
+    <div class="am-collapse am-topbar-collapse am-topbar-left">
         <ul class="am-nav am-nav-pills am-topbar-nav">
+            <li class="am-active"><a href="#">首页</a></li>
+            <li><a href="#">新增博客</a></li>
+            <li class="am-dropdown" data-am-dropdown>
+                <a class="am-dropdown-toggle" data-am-dropdown-toggle href="javascript:;">博客管理 <span class="am-icon-caret-down"></span></a>
+                <ul class="am-dropdown-content">
+                    <li><a href="#">修改-删除</a></li>
+                    <li><a href="#">隐藏博客</a></li>
+                    <li><a href="#">分类管理</a></li>
+                </ul>
+            </li>
+            <li><a href="#">评论管理</a></li>
+            <li><a href="#">参数设置</a></li>
             <li><a href="#">退出登录</a></li>
         </ul>
     </div>
 </header>
-
+@yield('main')
 <footer data-am-widget="footer" class="am-footer am-footer-default" data-am-footer="{  }">
     <div class="am-footer-miscs ">
         <p>基于PHP-Laravel框架和Redis的博客，不使用MySQL，前端使用了AmazeUI的模板。</p>
-        <p>服务器时间:{{ date('Y-m-d H:i:s', time()) }} 执行耗时:{{ printf("%0.3f", microtime(true) - LARAVEL_START) }}</div>
+        <p>服务器时间:{{ date('Y-m-d H:i:s', time()) }} 执行耗时:{{ printf("%0.3f", microtime(true) - LARAVEL_START) }}
     </div>
 </footer>
-<script src="{{ URL::asset("/js/jquery.min.js") }}"></script>
-<script src="{{ URL::asset("/js/amazeui.min.js") }}"></script>
 </body>
 </html>
