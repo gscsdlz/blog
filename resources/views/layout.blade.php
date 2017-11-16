@@ -3,21 +3,13 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="description" content="">
-    <meta name="keywords" content="">
+    <meta name="description" content="基于Redis、Laravel的NoSQL博客">
+    <meta name="keywords" content="博客,Redis,Laravel,NoSQL">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <title>@yield('title')Daemon BLOG首页</title>
+    <title>@yield('title')</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="Cache-Control" content="no-siteapp"/>
     <link rel="icon" type="image/png" href="{{ URL::asset('/i/favicon.png') }}">
-    <meta name="mobile-web-app-capable" content="yes">
-    <link rel="icon" sizes="192x192" href="{{ URL::asset('/i/app-icon72x72@2x.png')}}">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <meta name="apple-mobile-web-app-title" content="Amaze UI"/>
-    <link rel="apple-touch-icon-precomposed" href="{{ URL::asset('/i/app-icon72x72@2x.png')}}">
-    <meta name="msapplication-TileImage" content="{{ URL::asset('/i/app-icon72x72@2x.png')}}">
-    <meta name="msapplication-TileColor" content="#0e90d2">
     <link rel="stylesheet" href="{{ URL::asset('/css/amazeui.min.css') }}">
 </head>
 
@@ -26,7 +18,6 @@
     <h1 class="am-topbar-brand">
         <a href="#">Daemon Blog</a>
     </h1>
-
     <button class="am-topbar-btn am-topbar-toggle am-btn am-btn-sm am-btn-success am-show-sm-only" data-am-collapse="{target: '#doc-topbar-collapse'}"><span class="am-sr-only">导航切换</span> <span class="am-icon-bars"></span></button>
 
     <div class="am-collapse am-topbar-collapse" id="doc-topbar-collapse">
@@ -87,7 +78,7 @@
             </div>
             <div class="am-panel-bd">
                 <img class="am-radius" src="{{ URL("images/header.jpg") }}" width="100%" alt="about me" >
-                <h2 class="am-text-center"><i><u>gscsdlz</u></i></h2>
+                <h2 class="am-text-center"><i><u>{{ $user->username }}</u></i></h2>
                 <p class="am-text-center">
                     <span class="am-icon-qq"></span>
                     <span class="am-icon-github"></span>
