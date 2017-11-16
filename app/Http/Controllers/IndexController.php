@@ -9,6 +9,7 @@
 namespace App\Http\Controllers;
 
 
+use App\Model\UserModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redis;
 
@@ -17,7 +18,14 @@ class IndexController extends Controller
     public function test(Request $request)
     {
         $redis = Redis::connection('user');
-        $redis->set('key', '1234');
-        dd($redis->get('key'));
+
+    }
+
+    public function index(Request $request)
+    {
+        $user  = new UserModel();
+        return view('index', [
+            'user' => $user
+        ]);
     }
 }
