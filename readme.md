@@ -11,6 +11,18 @@ Laravel框架和Redis。前端采用AmazeUI。
 - 基于MIT
 
 ## Redis数据库说明
+### 1号数据库-用户相关（博主）
+### 2号数据库-博客相关
+#### BlogID:XXX
+> 记录博文内容的散列表，内容的键值对有
+title（标题）, textPath（HTML文件路径）, mdtextPath（MD文件路径）,
+ type（类型）, time（发布时间）, view（浏览次数）,
+  updateTime（更新时间）,updateCount（更新次数）
+#### primaryKey
+> 记录博客当前到哪个编号了，类似于关系数据库的自增值主码。
+#### Types:XXXX
+> 记录博客类型与博客的关系，集合类型，主要存储了博客的ID
+
 ### 3号数据库-网站配置信息
 #### 字符串内容
 ##### adminMail
