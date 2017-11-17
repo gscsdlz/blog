@@ -20,7 +20,7 @@ class UserModel
     public function __construct()
     {
         $this->redis = Redis::connection($this->dbname);
-        $this->variable = $this->redis->hgetall(config('blog.username'));
+        $this->variable = $this->redis->hgetall('user');
     }
 
     public function __set($name, $value)

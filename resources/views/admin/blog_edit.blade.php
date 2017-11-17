@@ -1,20 +1,84 @@
 @extends('admin.layout')
 @section('main')
+    <div class="am-g">
+        <div class="am-u-md-4 am-u-md-centered">
+            <form class="am-form">
+                <div class="am-form-group">
+                    <label for="title">标题</label>
+                    <input type="text" class="" id="title" placeholder="请输入博客文章名">
+                </div>
+                <div class="am-form-group">
+                    <label for="title">文章类型</label>
+                    <select data-am-selected id="type">
+                        <option value="-1">请选择文章类型</option>
+                        <option value="PHP">PHP</option>
+                    </select>
+                    <button style="float: right;" class="am-btn am-btn-primary" type="button">新增文章分类</button>
+                </div>
+            </form>
+        </div>
+    </div>
     <div class="editormd" id="editormd">
         <textarea style="display:none;">### Hello Editor.md !</textarea>
     </div>
+    <div class="am-g">
+        <div class="am-u-md-12 am-u-md-centered">
+            <button id="submit" class="am-topbar-fixed-bottom am-btn am-btn-block am-btn-success" type="button">保存文章</button>
+        </div>
+    </div>
+    <div class="am-modal am-modal-alert" tabindex="-1" id="alert">
+        <div class="am-modal-dialog">
+            <div class="am-modal-hd">提醒</div>
+            <div class="am-modal-bd">
+                <p class="info am-danger" id="info"></p>
+            </div>
+            <div class="am-modal-footer">
+                <span class="am-modal-btn">确定</span>
+            </div>
+        </div>
+    </div>
     <script>
-        $(function() {
+        $(document).ready(function () {
             var editor = editormd({
                 id   : "editormd",
                 path : "{{ URL('ext/meditor/lib/') }}/",
-                width : "80%",
+                width : "85%",
                 height : 777,
                 imageUpload : true,
                 imageFormats : ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
                 imageUploadURL : "{{ URL('admin/imgUpload') }}",
+                saveHTMLToTextarea : true,
             });
 
-        });
+            $("#submit").click(function () {
+                var title = $("#title").val();
+                var type = $("#type").val();
+                var text = editor.getHTML();
+                var mdtext = editor.getMarkdown();
+                if(title.length != 0 && text.length != 0 && type != -1 && mdtext.length != 0) {
+                    $.post("{{ URL('admin/blog/add') }}", {
+                        title:title,
+                        type:type,
+                        text:text,
+                        mdtext:mdtext,
+                        _token:"{{ csrf_token() }}"
+                    }, function(data){
+                        if(data.status == true) {
+                            //
+                        }
+                    })
+                } else {
+                    var str = '';
+                    if(text.length == 0)
+                        str += '<br/>内容为空！';
+                    if(title.length == 0)
+                        str += '<br/>标题为空！';
+                    if(type == -1)
+                        str += '<br/>必须选择类型！';
+                    $("#info").html(str);
+                    $("#alert").modal();
+                }
+            })
+        })
     </script>
 @endsection

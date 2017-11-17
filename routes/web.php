@@ -16,7 +16,7 @@ Route::get('/', 'IndexController@index');
 Route::any('/test', 'IndexController@test');
 
 Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function(){
-    Route::get('/', 'Admin\IndexController@login');
+    Route::get('/', 'IndexController@login');
     Route::post('checkEmail', 'IndexController@checkEmail');
     Route::post('login', 'IndexController@doLogin');
 });
@@ -27,5 +27,6 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin', 'namespace' => 'Admi
     });
     Route::get('blog/edit', 'BlogController@edit');
     Route::post('imgUpload', 'UploadController@image');
+    Route::post('blog/add', 'BlogController@add');
 
 });
