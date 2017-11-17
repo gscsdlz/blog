@@ -17,7 +17,11 @@ class BlogController extends Controller
 {
     public function edit(Request $request)
     {
-        return view('admin.blog_edit');
+        $blog = new BlogModel();
+        $types = $blog->refresh_types();
+        return view('admin.blog_edit', [
+            'types' => $types
+        ]);
     }
 
     public function add(Request $request)
@@ -28,12 +32,14 @@ class BlogController extends Controller
         $mdtext = $request->get('mdtext');
 
         $blog = new BlogModel();
-        $blog->save([
+        $bid = $blog->save([
            'title' => $title,
            'text' => $text,
            'mdtext' => $mdtext,
            'time' => time(),
             'type' => $type,
         ]);
+
+        return response()->json(['status' => true, 'bid' => $bid]);
     }
 }

@@ -11,9 +11,11 @@
                     <label for="title">文章类型</label>
                     <select data-am-selected id="type">
                         <option value="-1">请选择文章类型</option>
-                        <option value="PHP">PHP</option>
+                        @foreach($types as $t)
+                            <option value="{{ $t }}">{{ $t }}</option>
+                        @endforeach
                     </select>
-                    <button style="float: right;" class="am-btn am-btn-primary" type="button">新增文章分类</button>
+                    <button id="addType" style="float: right;" class="am-btn am-btn-primary" type="button">新增文章分类</button>
                 </div>
             </form>
         </div>
@@ -34,6 +36,19 @@
             </div>
             <div class="am-modal-footer">
                 <span class="am-modal-btn">确定</span>
+            </div>
+        </div>
+    </div>
+    <div class="am-modal am-modal-prompt" tabindex="-1" id="prompt">
+        <div class="am-modal-dialog">
+            <div class="am-modal-hd">输入</div>
+            <div class="am-modal-bd">
+                请输入新的类别
+                <input type="text" class="am-modal-prompt-input">
+            </div>
+            <div class="am-modal-footer">
+                <span class="am-modal-btn" data-am-modal-cancel>取消</span>
+                <span class="am-modal-btn" data-am-modal-confirm>提交</span>
             </div>
         </div>
     </div>
@@ -64,7 +79,11 @@
                         _token:"{{ csrf_token() }}"
                     }, function(data){
                         if(data.status == true) {
-                            //
+                            $("#info").html("保存成功！");
+                            $("#alert").modal();
+                            setTimeout(function(){
+                                window.location.href = '/'
+                            }, 3000)
                         }
                     })
                 } else {
@@ -78,6 +97,19 @@
                     $("#info").html(str);
                     $("#alert").modal();
                 }
+            })
+
+            $("#addType").click(function(){
+                $("#prompt").modal({
+                    onConfirm:function(e){
+                        if(e.data.length != 0) {
+                            $("#type").append('<option value="'+e.data+'">'+e.data+'</option>');
+                            $("#type").val(e.data);
+                        } else {
+                            alert("输入不能为空！");
+                        }
+                    }
+                })
             })
         })
     </script>

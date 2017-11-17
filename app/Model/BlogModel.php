@@ -10,7 +10,7 @@
  * 文章名.title | 内容（HTML）路径.text | 内容（MD）路径.mdtext | 分类.type | 创建时间.time | 浏览次数.view | 修改时间.updateTime | 修改次数.updateCount
  * 维护一个字符串作用类似于主键 blogPrimaryKey
  *
- * 分类 types 多列表类型 键名为 类型名 值为使用该类型的文章
+ * 分类 types 集合类型 键名为 类型名 值为使用该类型的文章ID
  *
  */
 
@@ -36,6 +36,8 @@ class BlogModel
     private $view = null;
     private $updateTime = null;
     private $updateCount = null;
+
+    public $types = null;
 
     public function __construct($blogID = null)
     {
@@ -72,6 +74,7 @@ class BlogModel
      * @param array
      *
      * 调用保存的时候，会自动将HTML文件存储为本地文本文件，并保留路径
+     * @return int
      */
     public function save($arr = null)
     {
@@ -111,6 +114,20 @@ class BlogModel
             'updateCount' =>$this->updateCount
         ));
         $this->redis->incr('primaryKey');  //更新伪外键
-        //$this->redis->
+        $this->redis->sadd('Types:'.$this->type, $pk);
+
+        return $pk;
+    }
+
+    public function refresh_types()
+    {
+        $this->types = [];
+        $res = $this->redis->keys('Types*');
+        foreach ($res as $t) {
+            //Types:XXXX
+            $arr = explode(":", $t);
+            $this->types[] = $arr[1];
+        }
+        return $this->types;
     }
 }
