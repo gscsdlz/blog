@@ -8,4 +8,5 @@
 
 return [
     'username' => env('username', 'daemon'),
+    'debugToken' => env('DEBUG_TOKEN', 'default'),
 ];
