@@ -11,16 +11,18 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Model\BlogModel;
+use App\Model\TypeModel;
 use Illuminate\Http\Request;
 
 class BlogController extends Controller
 {
     public function edit(Request $request)
     {
-        $blog = new BlogModel();
-        $types = $blog->refresh_types();
+        $type = new TypeModel();
+
         return view('admin.blog_edit', [
-            'types' => $types
+            'types' => $type->types,
+            'menu' => 'blog@edit',
         ]);
     }
 
