@@ -22,11 +22,12 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function(){
 });
 
 Route::group(['prefix' => 'admin', 'middleware' => 'admin', 'namespace' => 'Admin'], function(){
-    Route::get('index', function(){
-        return view('admin.layout');
-    });
     Route::get('blog/edit', 'BlogController@edit');
-    Route::post('imgUpload', 'UploadController@image');
     Route::post('blog/add', 'BlogController@add');
+    Route::post('imgUpload', 'UploadController@image');
+
+    Route::get('type/edit', 'TypeController@edit');
+    Route::post('type/change', 'TypeController@change');
+    Route::post('type/add', 'TypeController@add');
 
 });
