@@ -9,6 +9,7 @@
 namespace App\Http\Controllers;
 
 
+use App\Model\TypeModel;
 use App\Model\UserModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redis;
@@ -24,8 +25,11 @@ class IndexController extends Controller
     public function index(Request $request)
     {
         $user  = new UserModel();
+        $type = new TypeModel(false);
+        $navbar = $type->get_navbar();
         return view('index', [
-            'user' => $user
+            'user' => $user,
+            'navbar' => $navbar,
         ]);
     }
 }
