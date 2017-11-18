@@ -1,4 +1,5 @@
 @extends('admin.layout')
+@section('title')新增文章@endsection
 @section('main')
     <div class="am-g">
         <div class="am-u-md-4 am-u-md-centered">
@@ -12,7 +13,7 @@
                     <select data-am-selected id="type">
                         <option value="-1">请选择文章类型</option>
                         @foreach($types as $t)
-                            <option value="{{ $t }}">{{ $t }}</option>
+                            <option value="{{ $t[0] }}">{{ $t[0] }}</option>
                         @endforeach
                     </select>
                     <button id="addType" style="float: right;" class="am-btn am-btn-primary" type="button">新增文章分类</button>
@@ -63,6 +64,7 @@
                 imageFormats : ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
                 imageUploadURL : "{{ URL('admin/imgUpload') }}",
                 saveHTMLToTextarea : true,
+                emoji : true
             });
 
             $("#submit").click(function () {

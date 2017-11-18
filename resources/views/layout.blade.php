@@ -25,6 +25,9 @@
             <li class="am-active"><a href="#">首页</a></li>
             <li><a href="#">全部文章</a></li>
             <li><a href="#">文章分类</a></li>
+            @foreach($navbar as $key => $value)
+                <li><a href="#">{{ $key }}</a></li>
+            @endforeach
         </ul>
 
         <form class="am-topbar-form am-topbar-right am-form-inline" role="search">

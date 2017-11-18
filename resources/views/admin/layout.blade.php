@@ -25,14 +25,14 @@
 
     <div class="am-collapse am-topbar-collapse am-topbar-left">
         <ul class="am-nav am-nav-pills am-topbar-nav">
-            <li class="am-active"><a href="#">首页</a></li>
-            <li><a href="#">新增博客</a></li>
+            <li @if(isset($menu) && $menu == 'index')class="am-active" @endif><a href="{{ URL('admin/') }}">首页</a></li>
+            <li @if(isset($menu) && $menu == 'blog@edit')class="am-active" @endif><a href="{{ URL('admin/blog/edit') }}">新增博客</a></li>
             <li class="am-dropdown" data-am-dropdown>
                 <a class="am-dropdown-toggle" data-am-dropdown-toggle href="javascript:;">博客管理 <span class="am-icon-caret-down"></span></a>
                 <ul class="am-dropdown-content">
                     <li><a href="#">修改-删除</a></li>
                     <li><a href="#">隐藏博客</a></li>
-                    <li><a href="#">分类管理</a></li>
+                    <li><a href="{{ URL('admin/type/edit') }}">分类管理</a></li>
                 </ul>
             </li>
             <li><a href="#">评论管理</a></li>
