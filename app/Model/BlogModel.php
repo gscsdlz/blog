@@ -37,8 +37,6 @@ class BlogModel
     private $updateTime = null;
     private $updateCount = null;
 
-    public $types = null;
-
     public function __construct($blogID = null)
     {
         $this->redis = Redis::connection($this->dbname);
@@ -114,20 +112,8 @@ class BlogModel
             'updateCount' =>$this->updateCount
         ));
         $this->redis->incr('primaryKey');  //更新伪外键
-        $this->redis->sadd('Types:'.$this->type, $pk);
+        $this->redis->sadd('Types:'.$this->type, $pk, '-1'); //redis中不允许空集合 加入-1区分
 
         return $pk;
-    }
-
-    public function refresh_types()
-    {
-        $this->types = [];
-        $res = $this->redis->keys('Types*');
-        foreach ($res as $t) {
-            //Types:XXXX
-            $arr = explode(":", $t);
-            $this->types[] = $arr[1];
-        }
-        return $this->types;
     }
 }
