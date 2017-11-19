@@ -64,6 +64,26 @@ class TypeModel
 
     public function del($name)
     {
-        $this->redis->del('Types:'.$name);
+        $arr = $this->redis->smembers('Types:'.$name);
+        if(count($arr) == 0 || (count($arr) == 1 && $arr[0] == "-1")) {
+            $this->redis->del('Types:' . $name);
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
+    public function set_navbar($lists)
+    {
+        //清空有序集合
+        $this->redis->del('TypeNavbar');
+
+        $this->redis->pipeline(function($pipe) use ($lists){
+            foreach ($lists as $t) {
+                $pipe->zadd('TypeNavbar', $t[1], $t[0]);
+            }
+        });
+
     }
 }

@@ -29,5 +29,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin', 'namespace' => 'Admi
     Route::get('type/edit', 'TypeController@edit');
     Route::post('type/change', 'TypeController@change');
     Route::post('type/add', 'TypeController@add');
+    Route::post('type/navbar_edit', 'TypeController@navbar');
+    Route::post('type/del', 'TypeController@del');
 
 });

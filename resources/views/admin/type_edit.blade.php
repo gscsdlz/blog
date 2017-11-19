@@ -24,7 +24,7 @@
                     <tr>
                         <td>{{ $i++ }}</td>
                         <td>{{ $t[0] }}</td>
-                        <td>{{ $t[1] }}</td>
+                        <td>{{ $t[1] - 1 }}</td>
                         <td>
                             <span style="cursor: pointer" data-am-popover="{content: '删除该类型', trigger: 'hover focus'}" class="am-icon-fw am-icon am-icon-trash am-icon-sm"></span> |
                             <span style="cursor: pointer" data-am-popover="{content: '修改类型名称', trigger: 'hover focus'}" class="am-icon-fw am-icon am-icon-edit am-icon-sm"></span>
@@ -34,7 +34,7 @@
             </table>
         </div>
         <div class="am-u-md-4 am-u-end am-text-center">
-            <h3 class="am-text-center">首页导航条热门分类<small>不建议设置过多 拖动调整</small></h3>
+            <h3 class="am-text-center">首页导航条热门分类<small>不建议设置过多 点击按钮调整</small></h3>
             <ul class="am-list am-list-static am-list-border am-text-left" id="navbarList">
                 @foreach($navbars as $key => $value)
                     <li>
@@ -48,7 +48,7 @@
             </ul>
             <button class="am-btn am-btn-primary" type="button" onclick="window.location.reload()">复原</button>
             <button class="am-btn am-btn-primary" type="button" id="add">新增</button>
-            <button class="am-btn-success am-btn">保存</button>
+            <button class="am-btn-success am-btn" type="button" id="save">保存</button>
         </div>
     </div>
     <div class="am-modal am-modal-alert" tabindex="-1" id="alert">
@@ -97,7 +97,18 @@
                     $("#info").html("该类型文章并不为空，不能删除。如果已经调整过，请刷新页面");
                     $("#alert").modal();
                 } else {
-
+                    var name = $(this).parent().prev().prev().html();
+                    $.post("{{ URL('admin/type/del') }}", {name:name, _token:"{{ csrf_token() }}"}, function(data){
+                        if(data.status == true) {
+                            $("#info").html("操作完成，即将自动刷新!");
+                            $("#alert").modal();
+                            window.setTimeout('window.location.reload()', 2000);
+                        } else {
+                            $("#info").html("操作失败，即将自动刷新!");
+                            $("#alert").modal();
+                            window.setTimeout('window.location.reload()', 2000);
+                        }
+                    })
                 }
             })
 
@@ -123,7 +134,7 @@
                 //左右去重
                 var leftArr = new Array();
                 var rightArr = new Array();
-
+                $("#typeSelect option:gt(0)").remove();
                 $(".am-icon-trash").each(function(){
                    leftArr.push($(this).parent().prev().prev().html());
                 })
@@ -158,12 +169,28 @@
             })
             $("#insert").click(function () {
                 var name = $("#newName").val();
-                alert(name);
                 if(name.length != 0) {
                     $.post("{{ URL('admin/type/add') }}", {name:name, _token:"{{ csrf_token() }}"}, function(data){
-
+                        $("#info").html("操作完成，即将自动刷新!");
+                        $("#alert").modal();
+                        window.setTimeout('window.location.reload()', 2000);
                     })
                 }
+            })
+
+            $("#save").click(function(){
+                var lists = new Array();
+                $("#navbarList").children().each(function () {
+                    var id = $(this).children().eq(0).html();
+                    var name = $(this).children().eq(4).html();
+                    lists.push(new Array(name, id));
+                })
+                $.post("{{ URL('admin/type/navbar_edit') }}", {data:lists, _token:"{{ csrf_token() }}"}, function(data){
+                    $("#info").html("操作完成，即将自动刷新!");
+                    $("#alert").modal();
+                    window.setTimeout('window.location.reload()', 2000);
+                })
+
             })
 
         })

@@ -22,7 +22,7 @@ class TypeController extends Controller
         return view('admin.type_edit', [
             'types' => $type->types,
             'navbars' => $navbars,
-            'menu' => 'blog'
+            'menu' => 'blog@type'
         ]);
     }
 
@@ -50,6 +50,23 @@ class TypeController extends Controller
             return response()->json(['status' => $status]);
         }
         return response()->json(['status' => false]);
+    }
+
+    public function navbar(Request $request)
+    {
+        $lists = $request->get('data');
+        $type = new TypeModel(false);
+        $type->set_navbar($lists);
+        return response()->json(['status' => true]);
+    }
+
+    public function del(Request $request)
+    {
+        $name = $request->get('name');
+        $type = new TypeModel(false);
+        $status = $type->del($name);
+        return response()->json(['status' => $status]);
+
     }
 
 }
