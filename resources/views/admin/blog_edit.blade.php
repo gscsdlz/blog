@@ -21,14 +21,17 @@
             </form>
         </div>
     </div>
+
+
     <div class="editormd" id="editormd">
         <textarea style="display:none;">### Hello Editor.md !</textarea>
     </div>
     <div class="am-g">
-        <div class="am-u-md-12 am-u-md-centered">
-            <button id="submit" class="am-topbar-fixed-bottom am-btn am-btn-block am-btn-success" type="button">保存文章</button>
+        <div class="am-u-md-4 am-u-md-centered">
+            <button id="submit" class="am-btn am-btn-block am-btn-success" type="button">保存文章</button>
         </div>
     </div>
+    <hr/>
     <div class="am-modal am-modal-alert" tabindex="-1" id="alert">
         <div class="am-modal-dialog">
             <div class="am-modal-hd">提醒</div>

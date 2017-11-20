@@ -41,14 +41,13 @@ class BlogModel
     {
         $this->redis = Redis::connection($this->dbname);
         if(!is_null($blogID)) {
-            $arr = $this->redis->hgetall('blogID:'.$blogID);
-            if(count($arr) == 8) {
+            $arr = $this->redis->hgetall('BlogID:'.$blogID);
+
+            if(count($arr) != 0) {
                 $this->blogID = $blogID;
                 $this->title = $arr['title'];
                 $this->textPath = $arr['textPath'];
-                $this->text = Storage::get('public/blog/html_file/'.$this->textPath);
                 $this->mdtextPath = $arr['mdtextPath'];
-                $this->mdtext = Storage::get('public/blog/md_file/'.$this->mdtextPath);
                 $this->view = $arr['view'];
                 $this->time = $arr['time'];
                 $this->type = $arr['type'];

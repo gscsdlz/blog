@@ -86,4 +86,14 @@ class TypeModel
         });
 
     }
+
+    public function pages($pl, $pr)
+    {
+        $lists = $this->redis->lrange('BlogIDIndex', $pl, $pr);
+        $arr = [];
+        foreach ($lists as $l) {
+            $arr[$l] = $this->redis->hgetall('BlogID:'.$l);
+        }
+        return $arr;
+    }
 }

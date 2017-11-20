@@ -11,6 +11,17 @@
     <meta http-equiv="Cache-Control" content="no-siteapp"/>
     <link rel="icon" type="image/png" href="{{ URL::asset('/i/favicon.png') }}">
     <link rel="stylesheet" href="{{ URL::asset('/css/amazeui.min.css') }}">
+    <link rel="stylesheet" href="{{ URL::asset('/ext/meditor/css/editormd.preview.min.css') }}">
+    <script src="{{ URL::asset("/js/jquery.min.js") }}"></script>
+    <script src="{{ URL::asset("/js/amazeui.min.js") }}"></script>
+    <script src="{{ URL('ext/meditor/lib/marked.min.js') }}"></script>
+    <script src="{{ URL('ext/meditor/lib/prettify.min.js') }}"></script>
+    <script src="{{ URL('ext/meditor/lib/raphael.min.js') }}"></script>
+    <script src="{{ URL('ext/meditor/lib/underscore.min.js') }}"></script>
+    <script src="{{ URL('ext/meditor/lib/sequence-diagram.min.js') }}"></script>
+    <script src="{{ URL('ext/meditor/lib/flowchart.min.js') }}"></script>
+    <script src="{{ URL('ext/meditor/lib/jquery.flowchart.min.js') }}"></script>
+    <script src="{{ URL('ext/meditor/editormd.min.js') }}"></script>
 </head>
 
 <body>
@@ -37,6 +48,7 @@
         </form>
     </div>
 </header>
+@if(isset($menu) && $menu == 'index')
 <div class="am-g">
     <div class="am-u-md-8 am-u-md-offset-2">
         <div data-am-widget="slider" class="am-slider am-slider-c3" data-am-slider='{&quot;controlNav&quot;:false}' >
@@ -68,13 +80,14 @@
         <canvas id="rightCanvas" width="100%" height="100%"></canvas>
     </div>
 </div>
-<hr/>
+@endif
 <div class="am-g">
     <div class="am-u-md-6 am-u-md-offset-2">
         @yield('main')
     </div>
 
     <div class="am-u-md-2 am-u-end">
+        @yield('rightArea')
         <div class="am-panel am-panel-default">
             <div class="am-panel-hd">
                 <h2 class="am-text-center "><span>博主简介</span></h2>
@@ -105,20 +118,13 @@
         </div>
     </div>
 </div>
+@yield('commit')
 <footer data-am-widget="footer" class="am-footer am-footer-default" data-am-footer="{  }">
     <div class="am-footer-miscs ">
         <p>基于PHP-Laravel框架和Redis的博客，不使用MySQL，前端使用了AmazeUI的模板。</p>
         <p>服务器时间:{{ date('Y-m-d H:i:s', time()) }} 执行耗时:{{ printf("%0.3f", microtime(true) - LARAVEL_START) }}</div>
     </div>
 </footer>
-<!--[if (gte IE 9)|!(IE)]><!-->
-<script src="{{ URL::asset("/js/jquery.min.js") }}"></script>
-<!--<![endif]-->
-<!--[if lte IE 8 ]>
-<script src="http://libs.baidu.com/jquery/1.11.3/jquery.min.js"></script>
-<script src="http://cdn.staticfile.org/modernizr/2.8.3/modernizr.js"></script>
-<script src="{{ URL::asset("/js/amazeui.ie8polyfill.min.js")}}></script>
-<![endif]-->
-<script src="{{ URL::asset("/js/amazeui.min.js") }}"></script>
+
 </body>
 </html>

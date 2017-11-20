@@ -27,8 +27,7 @@
         <ul class="am-nav am-nav-pills am-topbar-nav">
             <li @if(isset($menu) && $menu == 'index')class="am-active" @endif><a href="{{ URL('admin/') }}">首页</a></li>
             <li @if(isset($menu) && $menu == 'blog@edit')class="am-active" @endif><a href="{{ URL('admin/blog/edit') }}">新增博客</a></li>
-            <li><a href="#">修改/删除博客</a></li>
-            <li><a href="#">隐藏博客</a></li>
+            <li @if(isset($menu) && $menu == 'blog@list')class="am-active" @endif><a href="{{ URL('admin/blog/list') }}">修改/删除博客</a></li>
             <li @if(isset($menu) && $menu == 'blog@type')class="am-active" @endif><a href="{{ URL('admin/type/edit') }}">分类管理</a></li>
             <li><a href="#">评论管理</a></li>
             <li><a href="#">参数设置</a></li>
@@ -37,7 +36,7 @@
     </div>
 </header>
 @yield('main')
-<footer data-am-widget="footer" class="am-footer am-footer-default am-topbar-fixed-bottom" data-am-footer="{  }">
+<footer data-am-widget="footer" class="am-footer am-footer-default" data-am-footer="{  }">
     <div class="am-footer-miscs ">
         <p>基于PHP-Laravel框架和Redis的博客，不使用MySQL，前端使用了AmazeUI的模板。</p>
         <p>服务器时间:{{ date('Y-m-d H:i:s', time()) }} 执行耗时:{{ printf("%0.3f", microtime(true) - LARAVEL_START) }}

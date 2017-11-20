@@ -16,12 +16,19 @@ use Illuminate\Http\Request;
 
 class BlogController extends Controller
 {
+
+    private static $type = null;
+    public function __construct()
+    {
+        if(is_null(self::$type))
+            self::$type = new TypeModel(true);
+    }
+
     public function edit(Request $request)
     {
-        $type = new TypeModel();
 
         return view('admin.blog_edit', [
-            'types' => $type->types,
+            'types' => self::$type->types,
             'menu' => 'blog@edit',
         ]);
     }
@@ -43,5 +50,16 @@ class BlogController extends Controller
         ]);
 
         return response()->json(['status' => true, 'bid' => $bid]);
+    }
+
+    public function list_blog(Request $request, $page = 1)
+    {
+        $pl = ($page - 1) * 20;
+        $pr = $pl + 20;
+        $blogs = self::$type->pages($pl, $pr);
+        return view('admin.blog_list', [
+            'menu' => 'blog@list',
+            'lists' => $blogs,
+        ]);
     }
 }

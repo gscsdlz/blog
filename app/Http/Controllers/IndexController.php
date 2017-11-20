@@ -9,6 +9,7 @@
 namespace App\Http\Controllers;
 
 
+use App\Model\BlogModel;
 use App\Model\TypeModel;
 use App\Model\UserModel;
 use Illuminate\Http\Request;
@@ -29,6 +30,19 @@ class IndexController extends Controller
         $navbar = $type->get_navbar();
         return view('index', [
             'user' => $user,
+            'navbar' => $navbar,
+        ]);
+    }
+
+    public function blog(Request $request, $bid)
+    {
+        $blog = new BlogModel($bid);
+        $user  = new UserModel();
+        $type = new TypeModel(false);
+        $navbar = $type->get_navbar();
+        return view('blog', [
+            'user' => $user,
+            'blog' => $blog,
             'navbar' => $navbar,
         ]);
     }
