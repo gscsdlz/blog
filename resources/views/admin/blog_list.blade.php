@@ -13,7 +13,7 @@
                 </tr>
                 @foreach($lists as $id => $blog )
                     <tr>
-                        <td><a href="#" target="_blank">{{ $id }}</a></td>
+                        <td><a href="{{ URL('blog/'.$id) }}" target="_blank">{{ $id }}</a></td>
                         <td>{{ $blog['title'] }}</td>
                         <td>{{ date('Y-m-d H:i:s', $blog['time']) }}</td>
                         <td>{{ $blog['type'] }}</td>

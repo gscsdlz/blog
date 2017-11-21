@@ -1,19 +1,23 @@
 @extends('admin.layout')
-@section('title')新增文章@endsection
+@section('title')@if(isset($bid))编辑文章@else新增文章@endif @endsection
 @section('main')
     <div class="am-g">
         <div class="am-u-md-4 am-u-md-centered">
             <form class="am-form">
                 <div class="am-form-group">
                     <label for="title">标题</label>
-                    <input type="text" class="" id="title" placeholder="请输入博客文章名">
+                    <input type="text" class=""  value="@if(isset($blog)){{ $blog->title }}@endif" id="title" placeholder="请输入博客文章名">
                 </div>
                 <div class="am-form-group">
                     <label for="title">文章类型</label>
                     <select data-am-selected id="type">
                         <option value="-1">请选择文章类型</option>
                         @foreach($types as $t)
-                            <option value="{{ $t[0] }}">{{ $t[0] }}</option>
+                            @if(isset($blog) && $blog->type == $t[0])
+                                <option selected value="{{ $t[0] }}">{{ $t[0] }}</option>
+                            @else
+                                <option value="{{ $t[0] }}">{{ $t[0] }}</option>
+                            @endif
                         @endforeach
                     </select>
                     <button id="addType" style="float: right;" class="am-btn am-btn-primary" type="button">新增文章分类</button>
@@ -24,13 +28,11 @@
 
 
     <div class="editormd" id="editormd">
-        <textarea style="display:none;">### Hello Editor.md !</textarea>
+        <textarea style="display:none;">
+# 欢迎使用Editor.md!!!
+</textarea>
     </div>
-    <div class="am-g">
-        <div class="am-u-md-4 am-u-md-centered">
-            <button id="submit" class="am-btn am-btn-block am-btn-success" type="button">保存文章</button>
-        </div>
-    </div>
+
     <hr/>
     <div class="am-modal am-modal-alert" tabindex="-1" id="alert">
         <div class="am-modal-dialog">
@@ -67,42 +69,71 @@
                 imageFormats : ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
                 imageUploadURL : "{{ URL('admin/imgUpload') }}",
                 saveHTMLToTextarea : true,
-                emoji : true
-            });
-
-            $("#submit").click(function () {
-                var title = $("#title").val();
-                var type = $("#type").val();
-                var text = editor.getHTML();
-                var mdtext = editor.getMarkdown();
-                if(title.length != 0 && text.length != 0 && type != -1 && mdtext.length != 0) {
-                    $.post("{{ URL('admin/blog/add') }}", {
-                        title:title,
-                        type:type,
-                        text:text,
-                        mdtext:mdtext,
-                        _token:"{{ csrf_token() }}"
-                    }, function(data){
-                        if(data.status == true) {
-                            $("#info").html("保存成功！");
+                emoji : true,
+                toolbarIcons : function() {
+                    return ["undo", "redo", "saveIcon", "|",
+                        "bold", "del", "italic", "quote", "ucwords", "uppercase", "lowercase", "|",
+                        "h1", "h2", "h3", "h4", "h5", "h6", "|",
+                        "list-ul", "list-ol", "hr", "|",
+                        "link", "reference-link", "image", "code", "preformatted-text", "code-block", "table", "datetime", "emoji", "html-entities", "pagebreak", "|",
+                        "goto-line", "watch", "preview", "fullscreen", "clear", "search", "|",
+                        "help", "info"]
+                },
+                toolbarIconsClass : {
+                    saveIcon : "fa-save"  // 指定一个FontAawsome的图标类
+                },
+                toolbarHandlers : {
+                    saveIcon : function(cm, icon, cursor, selection) {
+                        var title = $("#title").val();
+                        var type = $("#type").val();
+                        var mdtext = editor.getMarkdown();
+                        if(title.length != 0  && type != -1 && mdtext.length != 0) {
+                            $.post("{{ URL('admin/blog/add') }}", {
+                                title:title,
+                                type:type,
+                                mdtext:mdtext,
+                                @if(isset($bid))blogID:{{ $bid }},@endif
+                                _token:"{{ csrf_token() }}"
+                            }, function(data){
+                                if(data.status == true) {
+                                    $("#info").html("保存成功！");
+                                    $("#alert").modal();
+                                    @if(!isset($bid))
+                                    setTimeout(function(){
+                                        window.location.href = "{{ URL('admin/blog/edit') }}/" + data.blogID;
+                                    }, 3000)
+                                    @endif
+                                } else {
+                                    $("#info").html("保存失败！请刷新页面后重试")
+                                    $("#alert").modal();
+                                }
+                            })
+                        } else {
+                            var str = '';
+                            if(title.length == 0)
+                                str += '<br/>标题为空！';
+                            if(type == -1)
+                                str += '<br/>必须选择类型！';
+                            $("#info").html(str);
                             $("#alert").modal();
-                            setTimeout(function(){
-                                window.location.href = '/'
-                            }, 3000)
                         }
+                    },
+                },
+                lang : {
+                    toolbar : {
+                        saveIcon : "保存"
+                    }
+                },
+                onload : function() {
+                    @if(isset($blog))
+                    var target = this;
+                    $.get("{{ URL('file/get_markdown/'.$blog->mdtextPath) }}", function(data) {
+                        target.setMarkdown(data);
                     })
-                } else {
-                    var str = '';
-                    if(text.length == 0)
-                        str += '<br/>内容为空！';
-                    if(title.length == 0)
-                        str += '<br/>标题为空！';
-                    if(type == -1)
-                        str += '<br/>必须选择类型！';
-                    $("#info").html(str);
-                    $("#alert").modal();
+
+                    @endif
                 }
-            })
+            });
 
             $("#addType").click(function(){
                 $("#prompt").modal({
@@ -116,6 +147,8 @@
                     }
                 })
             })
+
+
         })
     </script>
 @endsection

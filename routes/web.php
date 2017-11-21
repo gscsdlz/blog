@@ -25,7 +25,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function(){
 });
 
 Route::group(['prefix' => 'admin', 'middleware' => 'admin', 'namespace' => 'Admin'], function(){
-    Route::get('blog/edit', 'BlogController@edit');
+    Route::get('blog/edit/{bid?}', 'BlogController@edit')->where(['bid' => '[0-9]*']);
     Route::post('blog/add', 'BlogController@add');
     Route::get('blog/list', 'BlogController@list_blog');
 

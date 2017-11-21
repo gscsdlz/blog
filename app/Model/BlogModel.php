@@ -27,8 +27,6 @@ class BlogModel
 
     private $blogID = null;
     private $title = null;
-    private $text = null;
-    private $textPath = null;
     private $mdtext = null;
     private $mdtextPath = null;
     private $type = null;
@@ -36,6 +34,7 @@ class BlogModel
     private $view = null;
     private $updateTime = null;
     private $updateCount = null;
+    private $oldType = null; //保留原始type类型 可能为空 但主要给修改文章时使用
 
     public function __construct($blogID = null)
     {
@@ -46,7 +45,6 @@ class BlogModel
             if(count($arr) != 0) {
                 $this->blogID = $blogID;
                 $this->title = $arr['title'];
-                $this->textPath = $arr['textPath'];
                 $this->mdtextPath = $arr['mdtextPath'];
                 $this->view = $arr['view'];
                 $this->time = $arr['time'];
@@ -70,49 +68,58 @@ class BlogModel
     /**
      * @param array
      *
-     * 调用保存的时候，会自动将HTML文件存储为本地文本文件，并保留路径
+     * 调用保存的时候，会自动将MarkDown文件存储为本地文本文件，并保留路径
      * @return int
      */
     public function save($arr = null)
     {
         if(!is_null($arr)) {
             $this->title = $arr['title'];
-            $this->text = $arr['text'];
             $this->mdtext = $arr['mdtext'];
             $this->time = $arr['time'];
             $this->type = $arr['type'];
 
             $this->view = isset($arr['view']) ? $arr['view'] : 0;
-            $this->updateTime = isset($arr['updateTime']) ? $arr['updateTime'] : 0;
+            $this->updateTime = isset($arr['updateTime']) ? $arr['updateTime'] : $this->time;
             $this->updateCount = isset($arr['updateCount']) ? $arr['updateCount'] : 0;
         }
 
+        if(isset($this->mdtextPath)) {
+            $this->redis->hset('BlogID:'.$this->blogID, 'title', $this->title);
+            $this->redis->hset('BlogID:'.$this->blogID, 'type', $this->type);
+            $this->redis->hset('BlogID:'.$this->blogID, 'updateTime', time());
+            $this->redis->hincrby('BlogID:'.$this->blogID, 'updateCount', 1);
+            if(!is_null($this->oldType) && $this->oldType != $this->type) {
+                $this->redis->srem('Types:'.$this->oldType, $this->blogID);
+                $this->redis->sadd('Types:'.$this->type, $this->blogID);
+            }
+            Storage::put('public/blog/md_file/'.$this->mdtextPath, $this->mdtext);
 
-        $this->mdtextPath = time().rand(1, 1000).".md";
-        Storage::put('public/blog/md_file/'.$this->mdtextPath, $this->mdtext);
+            return $this->blogID;
+        } else {
+            $this->mdtextPath = time() . rand(1, 1000) . ".md";
+            Storage::put('public/blog/md_file/' . $this->mdtextPath, $this->mdtext);
 
+            $pk = $this->redis->get('primaryKey');
+            if(is_null($pk)) {  //第一次使用
+                $pk = 0;
+            }
+            $pk = $pk + 1;
+            $this->redis->hmset('BlogID:'.$pk, array(
+                'title' => $this->title,
+                'textPath' =>  $this->textPath,
+                'mdtextPath' => $this->mdtextPath,
+                'type' => $this->type,
+                'time' => $this->time,
+                'view' => $this->view,
+                'updateTime' => $this->updateTime,
+                'updateCount' =>$this->updateCount
+            ));
+            $this->redis->incr('primaryKey');  //更新伪外键
+            $this->redis->sadd('Types:'.$this->type, $pk, '-1'); //redis中不允许空集合 加入-1区分
+            $this->redis->rpush('BlogIDIndex', $pk);
 
-        $this->textPath =  time().rand(1, 1000).".html";
-        Storage::put('public/blog/html_file/'.$this->textPath, $this->text);
-
-        $pk = $this->redis->get('primaryKey');
-        if(is_null($pk)) {  //第一次使用
-            $pk = 0;
+            return $pk;
         }
-        $pk = $pk + 1;
-        $this->redis->hmset('BlogID:'.$pk, array(
-            'title' => $this->title,
-            'textPath' =>  $this->textPath,
-            'mdtextPath' => $this->mdtextPath,
-            'type' => $this->type,
-            'time' => $this->time,
-            'view' => $this->view,
-            'updateTime' => $this->updateTime,
-            'updateCount' =>$this->updateCount
-        ));
-        $this->redis->incr('primaryKey');  //更新伪外键
-        $this->redis->sadd('Types:'.$this->type, $pk, '-1'); //redis中不允许空集合 加入-1区分
-
-        return $pk;
     }
 }

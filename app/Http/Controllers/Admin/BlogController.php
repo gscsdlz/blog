@@ -24,32 +24,52 @@ class BlogController extends Controller
             self::$type = new TypeModel(true);
     }
 
-    public function edit(Request $request)
+    public function edit(Request $request, $bid = null)
     {
 
-        return view('admin.blog_edit', [
-            'types' => self::$type->types,
-            'menu' => 'blog@edit',
-        ]);
+        if(is_null($bid)) {
+            return view('admin.blog_edit', [
+                'types' => self::$type->types,
+                'menu' => 'blog@edit',
+            ]);
+        } else {
+            $blog = new BlogModel($bid);
+            return view('admin.blog_edit', [
+                'types' => self::$type->types,
+                'menu' => 'blog@edit',
+                'blog' => $blog,
+                'bid' => (int)$bid,
+            ]);
+        }
     }
 
     public function add(Request $request)
     {
         $title = $request->get('title');
         $type = $request->get('type');
-        $text = $request->get('text');
         $mdtext = $request->get('mdtext');
+        $bid = $request->get('blogID', null);
 
-        $blog = new BlogModel();
-        $bid = $blog->save([
-           'title' => $title,
-           'text' => $text,
-           'mdtext' => $mdtext,
-           'time' => time(),
-            'type' => $type,
-        ]);
+        if(is_null($bid)) {
+            $blog = new BlogModel();
+            $bid = $blog->save([
+                'title' => $title,
+                'mdtext' => $mdtext,
+                'time' => time(),
+                'type' => $type,
+            ]);
+        } else {
+            $blog = new BlogModel($bid);
+            $blog->title = $title;
+            $blog->oldType = $blog->type;
+            $blog->type = $type;
+            $blog->mdtext = $mdtext;
 
-        return response()->json(['status' => true, 'bid' => $bid]);
+            $blog->save();
+
+        }
+
+        return response()->json(['status' => true, 'blogID' => $bid]);
     }
 
     public function list_blog(Request $request, $page = 1)
