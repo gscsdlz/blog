@@ -9,7 +9,7 @@
     <title>@yield('title')</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="Cache-Control" content="no-siteapp"/>
-    <link rel="icon" type="image/png" href="{{ URL::asset('/i/favicon.png') }}">
+    <link rel="icon" type="image/png" href="{{ URL::asset('/i/favicon.ico') }}">
     <link rel="stylesheet" href="{{ URL::asset('/css/amazeui.min.css') }}">
     <link rel="stylesheet" href="{{ URL::asset('ext/meditor/css/editormd.min.css') }}">
     <script src="{{ URL::asset("/js/jquery.min.js") }}"></script>

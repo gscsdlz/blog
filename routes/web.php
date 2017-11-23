@@ -12,7 +12,9 @@
 */
 
 Route::get('/', 'IndexController@index');
-Route::any('/test', 'IndexController@test');
+
+Route::get('all/{page?}', 'IndexController@blog_list')->where(['page' => '[0-9]*']);
+Route::get('type/{type}/{page?}', 'IndexController@blog_types')->where(['page' => '[0-9]*']);
 Route::get('blog/{bid}', 'IndexController@blog')->where(['bid' => '[0-9]+']);
 Route::get('file/get_markdown/{fname}', function($fname){
    return Storage::get('public/blog/md_file/'.$fname);
@@ -27,6 +29,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function(){
 Route::group(['prefix' => 'admin', 'middleware' => 'admin', 'namespace' => 'Admin'], function(){
     Route::get('blog/edit/{bid?}', 'BlogController@edit')->where(['bid' => '[0-9]*']);
     Route::post('blog/add', 'BlogController@add');
+    Route::any('blog/del', 'BlogController@del');
     Route::get('blog/list', 'BlogController@list_blog');
 
     Route::post('imgUpload', 'UploadController@image');
@@ -36,6 +39,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin', 'namespace' => 'Admi
     Route::post('type/add', 'TypeController@add');
     Route::post('type/navbar_edit', 'TypeController@navbar');
     Route::post('type/del', 'TypeController@del');
+
 
 
 

@@ -10,7 +10,7 @@
  * 文章名.title | 内容（HTML）路径.text | 内容（MD）路径.mdtext | 分类.type | 创建时间.time | 浏览次数.view | 修改时间.updateTime | 修改次数.updateCount
  * 维护一个字符串作用类似于主键 blogPrimaryKey
  *
- * 分类 types 集合类型 键名为 类型名 值为使用该类型的文章ID
+ * 分类 types 列表类型 键名为 类型名 值为使用该类型的文章ID
  *
  */
 
@@ -18,6 +18,7 @@ namespace App\Model;
 
 
 use Illuminate\Support\Facades\Redis;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Storage;
 
 class BlogModel
@@ -121,5 +122,49 @@ class BlogModel
 
             return $pk;
         }
+    }
+
+    public function list_all($page)
+    {
+        $pl = ($page - 1) * 20;
+        $pr = $pl + 20;
+        $lists = $this->redis->lrange('BlogIDIndex', $pl, $pr);
+
+        foreach ($lists as $l) {
+            $arr[$l] = $this->redis->hgetall('BlogID:'.$l);
+        }
+        return $arr;
+    }
+
+    public function list_withTypes($type, $page)
+    {
+        $lists = $this->redis->smembers('Types:'.$type);
+        $lists = array_chunk($lists, 20);
+
+        if(isset($lists[$page - 1])) {
+            $arr = [];
+            foreach ($lists[$page - 1] as $l) {
+                if($l != -1)
+                $arr[$l] = $this->redis->hgetall('BlogID:'.$l);
+            }
+            return $arr;
+        }
+        return [];
+    }
+
+    public static function del($bid) {
+        $redis = Redis::connection('blog');
+        $path = $redis->hget('BlogID:'.$bid, 'mdtextPath');
+        $type = $redis->hget('BlogID:'.$bid, 'type');
+        Storage::delete('public/blog/md_file/'.$path);
+        $redis->srem('Types:'.$type, $bid);
+        $redis->lrem('BlogIDIndex', '0', $bid);
+        $redis->del('BlogID:'.$bid);
+    }
+
+    public static function incView($bid)
+    {
+        $redis = Redis::connection('blog');
+        $redis->hincrby('BlogID:'.$bid, 'view', 1);
     }
 }

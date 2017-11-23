@@ -17,33 +17,60 @@ use Illuminate\Support\Facades\Redis;
 
 class IndexController extends Controller
 {
-    public function test(Request $request)
+    private $navbar = null;
+    private $user = null;
+    public function __construct()
     {
-        $redis = Redis::connection('user');
+        $type = new TypeModel(false);
+        $this->navbar = $type->get_navbar();
 
+        $this->user  = new UserModel();
     }
 
     public function index(Request $request)
     {
-        $user  = new UserModel();
-        $type = new TypeModel(false);
-        $navbar = $type->get_navbar();
         return view('index', [
-            'user' => $user,
-            'navbar' => $navbar,
+            'menu' => 'index',
+            'user' =>  $this->user,
+            'navbar' => $this->navbar,
         ]);
     }
 
     public function blog(Request $request, $bid)
     {
         $blog = new BlogModel($bid);
-        $user  = new UserModel();
-        $type = new TypeModel(false);
-        $navbar = $type->get_navbar();
+        if(!is_null($blog->blogID)){
+            BlogModel::incView($bid);
+        }
         return view('blog', [
-            'user' => $user,
+            'user' =>  $this->user,
             'blog' => $blog,
-            'navbar' => $navbar,
+            'navbar' => $this->navbar,
+            'neededitorMD' => true,
+        ]);
+    }
+
+    public function blog_list(Request $request, $page =  1)
+    {
+        $blog = new BlogModel();
+        $arr = $blog->list_all($page);
+        return view('blog_list', [
+            'arr' => $arr,
+            'user' =>  $this->user,
+            'menu' => 'blog@all',
+            'navbar' => $this->navbar,
+        ]);
+    }
+
+    public function blog_types(Request $request, $types, $page = 1)
+    {
+        $blog = new BlogModel();
+        $arr = $blog->list_withTypes($types, $page);
+        return view('blog_list', [
+            'arr' => $arr,
+            'user' =>  $this->user,
+            'menu' => 'type@'.$types,
+            'navbar' => $this->navbar,
         ]);
     }
 }

@@ -9,11 +9,12 @@
     <title>@yield('title')</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="Cache-Control" content="no-siteapp"/>
-    <link rel="icon" type="image/png" href="{{ URL::asset('/i/favicon.png') }}">
+    <link rel="icon" type="image/png" href="{{ URL::asset('/i/favicon.ico') }}">
     <link rel="stylesheet" href="{{ URL::asset('/css/amazeui.min.css') }}">
-    <link rel="stylesheet" href="{{ URL::asset('/ext/meditor/css/editormd.preview.min.css') }}">
     <script src="{{ URL::asset("/js/jquery.min.js") }}"></script>
     <script src="{{ URL::asset("/js/amazeui.min.js") }}"></script>
+    @if(isset($neededitorMD))
+    <link rel="stylesheet" href="{{ URL::asset('/ext/meditor/css/editormd.preview.min.css') }}">
     <script src="{{ URL('ext/meditor/lib/marked.min.js') }}"></script>
     <script src="{{ URL('ext/meditor/lib/prettify.min.js') }}"></script>
     <script src="{{ URL('ext/meditor/lib/raphael.min.js') }}"></script>
@@ -22,6 +23,7 @@
     <script src="{{ URL('ext/meditor/lib/flowchart.min.js') }}"></script>
     <script src="{{ URL('ext/meditor/lib/jquery.flowchart.min.js') }}"></script>
     <script src="{{ URL('ext/meditor/editormd.min.js') }}"></script>
+    @endif
 </head>
 
 <body>
@@ -33,12 +35,15 @@
 
     <div class="am-collapse am-topbar-collapse" id="doc-topbar-collapse">
         <ul class="am-nav am-nav-pills am-topbar-nav">
-            <li class="am-active"><a href="#">首页</a></li>
-            <li><a href="#">全部文章</a></li>
+            <li @if(!isset($menu) || $menu == 'index')class="am-active"@endif><a href="{{ URL('/') }}">首页</a></li>
+            <li @if(isset($menu) && $menu == 'blog@all')class="am-active"@endif><a href="{{ URL('all') }}">全部文章</a></li>
             <li><a href="#">文章分类</a></li>
             @foreach($navbar as $key => $value)
-                <li><a href="#">{{ $key }}</a></li>
+                <li @if(isset($menu) && $menu == 'type@'.$key)class="am-active"<?php $find = true;?>@endif><a href="{{ URL('type/'.$key.'/1') }}">{{ $key }}</a></li>
             @endforeach
+            @if(!isset($find) && isset($menu) && strpos($menu, 'type@') !== false)
+                <li class="am-active"><a href="{{ URL(str_replace_first('@', '/', $menu).'/1') }}">{{ substr($menu, 5) }}</a></li>
+            @endif
         </ul>
 
         <form class="am-topbar-form am-topbar-right am-form-inline" role="search">
@@ -48,45 +53,12 @@
         </form>
     </div>
 </header>
-@if(isset($menu) && $menu == 'index')
-<div class="am-g">
-    <div class="am-u-md-8 am-u-md-offset-2">
-        <div data-am-widget="slider" class="am-slider am-slider-c3" data-am-slider='{&quot;controlNav&quot;:false}' >
-            <ul class="am-slides">
-                <li>
-                    <img src="http://s.amazeui.org/media/i/demos/bing-1.jpg">
-                    <div class="am-slider-desc"><div class="am-slider-counter"><span class="am-active">1</span>/4</div>远方 有一个地方 那里种有我们的梦想</div>
-
-                </li>
-                <li>
-                    <img src="http://s.amazeui.org/media/i/demos/bing-2.jpg">
-                    <div class="am-slider-desc"><div class="am-slider-counter"><span class="am-active">2</span>/4</div>某天 也许会相遇 相遇在这个好地方</div>
-
-                </li>
-                <li>
-                    <img src="http://s.amazeui.org/media/i/demos/bing-3.jpg">
-                    <div class="am-slider-desc"><div class="am-slider-counter"><span class="am-active">3</span>/4</div>不要太担心 只因为我相信 终会走过这条遥远的道路</div>
-
-                </li>
-                <li>
-                    <img src="http://s.amazeui.org/media/i/demos/bing-4.jpg">
-                    <div class="am-slider-desc"><div class="am-slider-counter"><span class="am-active">4</span>/4</div>OH PARA PARADISE 是否那么重要 你是否那么地遥远</div>
-
-                </li>
-            </ul>
-        </div>
-    </div>
-    <div class="am-u-md-2">
-        <canvas id="rightCanvas" width="100%" height="100%"></canvas>
-    </div>
-</div>
-@endif
 <div class="am-g">
     <div class="am-u-md-6 am-u-md-offset-2">
         @yield('main')
     </div>
 
-    <div class="am-u-md-2 am-u-end">
+    <div class="am-u-md-2 am-u-end" id="aboutMe">
         @yield('rightArea')
         <div class="am-panel am-panel-default">
             <div class="am-panel-hd">
@@ -122,7 +94,7 @@
 <footer data-am-widget="footer" class="am-footer am-footer-default" data-am-footer="{  }">
     <div class="am-footer-miscs ">
         <p>基于PHP-Laravel框架和Redis的博客，不使用MySQL，前端使用了AmazeUI的模板。</p>
-        <p>服务器时间:{{ date('Y-m-d H:i:s', time()) }} 执行耗时:{{ printf("%0.3f", microtime(true) - LARAVEL_START) }}</div>
+        <p>服务器时间:{{ date('Y-m-d H:i:s', time()) }} 执行耗时:{{ printf("%0.3f", microtime(true) - LARAVEL_START) }}</p>
     </div>
 </footer>
 

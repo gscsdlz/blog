@@ -82,4 +82,11 @@ class BlogController extends Controller
             'lists' => $blogs,
         ]);
     }
+
+    public function del(Request $request)
+    {
+        $bid = $request->get('bid');
+        BlogModel::del($bid);
+        return response()->json(['status'=>true]);
+    }
 }
