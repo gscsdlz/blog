@@ -53,9 +53,14 @@ class IndexController extends Controller
     public function blog_list(Request $request, $page =  1)
     {
         $blog = new BlogModel();
+        if($page < 1)
+            $page = 1;
         $arr = $blog->list_all($page);
+
         return view('blog_list', [
-            'arr' => $arr,
+            'arr' => $arr[0],
+            'total' => $arr[1],
+            'page' => $page,
             'user' =>  $this->user,
             'menu' => 'blog@all',
             'navbar' => $this->navbar,
@@ -69,7 +74,20 @@ class IndexController extends Controller
         return view('blog_list', [
             'arr' => $arr,
             'user' =>  $this->user,
+            'page' => $page,
+            'type' => $types,
             'menu' => 'type@'.$types,
+            'navbar' => $this->navbar,
+        ]);
+    }
+
+    public function type_list(Request $request)
+    {
+        $t = new TypeModel();
+        return view('type_list', [
+            'arr' => $t->types,
+            'user' =>  $this->user,
+            'menu' => 'typeAll',
             'navbar' => $this->navbar,
         ]);
     }

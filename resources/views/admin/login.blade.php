@@ -94,7 +94,7 @@
             if(vcode.length != 0) {
                 $.post("{{ URL('admin/login') }}", {vcode: vcode, _token: "{{ csrf_token() }}"}, function (data) {
                     if (data.status == true)
-                        window.location.href = "{{ URL('admin/index') }}";
+                        window.location.href = "{{ URL('admin/') }}";
                     else {
                         if (data.info != 'TError') {
                             $("#info").html("验证码错误");

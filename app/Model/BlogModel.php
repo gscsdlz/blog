@@ -35,6 +35,8 @@ class BlogModel
     private $view = null;
     private $updateTime = null;
     private $updateCount = null;
+    private $visible = null;
+
     private $oldType = null; //保留原始type类型 可能为空 但主要给修改文章时使用
 
     public function __construct($blogID = null)
@@ -50,6 +52,7 @@ class BlogModel
                 $this->view = $arr['view'];
                 $this->time = $arr['time'];
                 $this->type = $arr['type'];
+                $this->visible = $arr['visible'];
                 $this->updateTime = $arr['updateTime'];
                 $this->updateCount = $arr['updateCount'];
             }
@@ -79,6 +82,7 @@ class BlogModel
             $this->mdtext = $arr['mdtext'];
             $this->time = $arr['time'];
             $this->type = $arr['type'];
+            $this->visible = 1;
 
             $this->view = isset($arr['view']) ? $arr['view'] : 0;
             $this->updateTime = isset($arr['updateTime']) ? $arr['updateTime'] : $this->time;
@@ -108,13 +112,13 @@ class BlogModel
             $pk = $pk + 1;
             $this->redis->hmset('BlogID:'.$pk, array(
                 'title' => $this->title,
-                'textPath' =>  $this->textPath,
                 'mdtextPath' => $this->mdtextPath,
                 'type' => $this->type,
                 'time' => $this->time,
                 'view' => $this->view,
                 'updateTime' => $this->updateTime,
-                'updateCount' =>$this->updateCount
+                'updateCount' =>$this->updateCount,
+                'visible' => 1,
             ));
             $this->redis->incr('primaryKey');  //更新伪外键
             $this->redis->sadd('Types:'.$this->type, $pk, '-1'); //redis中不允许空集合 加入-1区分
@@ -126,14 +130,19 @@ class BlogModel
 
     public function list_all($page)
     {
+        $len = $this->redis->llen('BlogIDIndex');
+        $total = (int)(($len - 1) / 20) + 1;
+        if($page > $total)
+            $page = $total;
         $pl = ($page - 1) * 20;
         $pr = $pl + 20;
-        $lists = $this->redis->lrange('BlogIDIndex', $pl, $pr);
 
+        $lists = $this->redis->lrange('BlogIDIndex', $pl, $pr);
+        $arr = [];
         foreach ($lists as $l) {
             $arr[$l] = $this->redis->hgetall('BlogID:'.$l);
         }
-        return $arr;
+        return [$arr, $total];
     }
 
     public function list_withTypes($type, $page)

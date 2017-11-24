@@ -6,7 +6,7 @@
     <meta name="description" content="基于Redis、Laravel的NoSQL博客">
     <meta name="keywords" content="博客,Redis,Laravel,NoSQL">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <title>@yield('title')</title>
+    <title>首页</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="Cache-Control" content="no-siteapp"/>
     <link rel="icon" type="image/png" href="{{ URL::asset('/i/favicon.ico') }}">
@@ -26,7 +26,7 @@
         <ul class="am-nav am-nav-pills am-topbar-nav">
             <li class="am-active"><a href="{{ URL('/') }}">首页</a></li>
             <li><a href="{{ URL('all') }}">全部文章</a></li>
-            <li><a href="#">文章分类</a></li>
+            <li><a href="{{ URL('all_type') }}">文章分类</a></li>
             @foreach($navbar as $key => $value)
                 <li><a href="{{ URL('type/'.$key.'/1') }}">{{ $key }}</a></li>
             @endforeach

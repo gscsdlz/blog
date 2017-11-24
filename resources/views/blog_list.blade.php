@@ -9,28 +9,32 @@
         </div>
         <div class="am-list-news-bd">
             <ul class="am-list">
+                @if(count($arr) > 0)
                 @foreach($arr as $key => $blog)
                     <li class="am-g am-list-item-dated">
                         <a href="{{ URL('blog/'.$key) }}" class="am-list-item-hd ">{{ $blog['title'] }}</a>
                         <span class="am-list-date">{{ $blog['type'] }} | {{ date('Y-m-d H:i', $blog['time']) }} | <span class="am-icon am-icon-eye"></span> {{ $blog['view'] }}</span>
                     </li>
                 @endforeach
+                @endif
             </ul>
         </div>
 
     </div>
     <ul data-am-widget="pagination" class="am-pagination am-pagination-select">
         <li class="am-pagination-prev ">
-            <a href="#" class="">上一页</a>
+            @if(isset($type))
+                <a href="{{ URL('type/'.$type.'/'.( $page- 1) )}}" class="">上一页</a>
+            @else
+                <a href="{{ URL('all/'.( $page- 1) )}}" class="">上一页</a>
+            @endif
         </li>
-        <li class="am-pagination-select">
-            <select>
-                <option value="#" class="">第1页</option>
-                <option value="#" class="">第2页</option>
-            </select>
-        </li>
+
         <li class="am-pagination-next ">
-            <a href="#" class="">下一页</a>
-        </li>
+            @if(isset($type))
+                <a href="{{ URL('type/'.$type.'/'.( $page+ 1) )}}" class="">下一页</a>
+            @else
+                <a href="{{ URL('all/'.( $page+ 1) )}}" class="">下一页</a>
+            @endif        </li>
     </ul>
 @endsection

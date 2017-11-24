@@ -37,7 +37,7 @@
         <ul class="am-nav am-nav-pills am-topbar-nav">
             <li @if(!isset($menu) || $menu == 'index')class="am-active"@endif><a href="{{ URL('/') }}">首页</a></li>
             <li @if(isset($menu) && $menu == 'blog@all')class="am-active"@endif><a href="{{ URL('all') }}">全部文章</a></li>
-            <li><a href="#">文章分类</a></li>
+            <li @if(isset($menu) && $menu == 'typeAll')class="am-active"@endif><a href="{{ URL('all_type') }}">文章分类</a></li>
             @foreach($navbar as $key => $value)
                 <li @if(isset($menu) && $menu == 'type@'.$key)class="am-active"<?php $find = true;?>@endif><a href="{{ URL('type/'.$key.'/1') }}">{{ $key }}</a></li>
             @endforeach
