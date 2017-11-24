@@ -44,7 +44,7 @@
             <div data-am-widget="slider" class="am-slider am-slider-c3" data-am-slider='{&quot;controlNav&quot;:false}' >
                 <ul class="am-slides">
                     <li>
-                        <img src="http://s.amazeui.org/media/i/demos/bing-1.jpg">
+                        <img src="{{ URL('i/b1.jpg') }}">
                         <div class="am-slider-desc"><div class="am-slider-counter"><span class="am-active">1</span>/4</div>远方 有一个地方 那里种有我们的梦想</div>
 
                     </li>
