@@ -29,7 +29,7 @@
 <body>
 <header class="am-topbar">
     <h1 class="am-topbar-brand">
-        <a href="#">Daemon Blog</a>
+        <a href="#">{{ config('blog.blogName') }}</a>
     </h1>
     <button class="am-topbar-btn am-topbar-toggle am-btn am-btn-sm am-btn-success am-show-sm-only" data-am-collapse="{target: '#doc-topbar-collapse'}"><span class="am-sr-only">导航切换</span> <span class="am-icon-bars"></span></button>
 
@@ -66,19 +66,14 @@
             </div>
             <div class="am-panel-bd">
                 <img class="am-radius" src="{{ URL("images/header.jpg") }}" width="100%" alt="about me" >
-                <h2 class="am-text-center"><i><u>{{ $user->username }}</u></i></h2>
-                <p class="am-text-center">
-                    <span class="am-icon-qq"></span>
-                    <span class="am-icon-github"></span>
-                    <span class="am-icon-envelope"></span>
-                </p>
+                <h2 class="am-text-center"><i><u>{{ config('blog.adminName') }}</u></i></h2>
                 <p>
-                    <span class="am-badge am-badge-primary am-radius">学生党</span>
-                    <span class="am-badge am-badge-primary am-radius">PHP开发</span>
-                    <span class="am-badge am-badge-primary am-radius">王者农药轻度患者</span>
-                    <span class="am-badge am-badge-primary am-radius">网易云重度患者</span>
+                    <?php $str = explode(':', config('blog.labels')) ?>
+                    @foreach($str as $s)
+                        <span class="am-badge am-badge-primary am-radius">{{ $s }}</span>
+                    @endforeach
                 </p>
-                <p>偶尔打打游戏，偶尔水水算法，写写网站。</p>
+                <p>{{ config('blog.aboutMe') }}</p>
             </div>
         </div>
         <div class="am-panel am-panel-default">

@@ -11,27 +11,22 @@ namespace App\Http\Controllers;
 
 use App\Model\BlogModel;
 use App\Model\TypeModel;
-use App\Model\UserModel;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Redis;
 
 class IndexController extends Controller
 {
     private $navbar = null;
-    private $user = null;
+
     public function __construct()
     {
         $type = new TypeModel(false);
         $this->navbar = $type->get_navbar();
-
-        $this->user  = new UserModel();
     }
 
     public function index(Request $request)
     {
         return view('index', [
             'menu' => 'index',
-            'user' =>  $this->user,
             'navbar' => $this->navbar,
         ]);
     }
@@ -43,7 +38,6 @@ class IndexController extends Controller
             BlogModel::incView($bid);
         }
         return view('blog', [
-            'user' =>  $this->user,
             'blog' => $blog,
             'navbar' => $this->navbar,
             'neededitorMD' => true,
@@ -61,7 +55,6 @@ class IndexController extends Controller
             'arr' => $arr[0],
             'total' => $arr[1],
             'page' => $page,
-            'user' =>  $this->user,
             'menu' => 'blog@all',
             'navbar' => $this->navbar,
         ]);
@@ -73,7 +66,6 @@ class IndexController extends Controller
         $arr = $blog->list_withTypes($types, $page);
         return view('blog_list', [
             'arr' => $arr,
-            'user' =>  $this->user,
             'page' => $page,
             'type' => $types,
             'menu' => 'type@'.$types,
@@ -86,7 +78,6 @@ class IndexController extends Controller
         $t = new TypeModel();
         return view('type_list', [
             'arr' => $t->types,
-            'user' =>  $this->user,
             'menu' => 'typeAll',
             'navbar' => $this->navbar,
         ]);

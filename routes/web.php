@@ -13,7 +13,7 @@
 
 Route::get('/', 'IndexController@index');
 
-Route::get('all_type', 'IndexController@type_list');
+Route::get('all_type', 'IndexController@type_list')->where(['page' => '[0-9]*']);
 Route::get('all/{page?}', 'IndexController@blog_list')->where(['page' => '[0-9]*']);
 Route::get('type/{type}/{page?}', 'IndexController@blog_types')->where(['page' => '[0-9]*']);
 Route::get('blog/{bid}', 'IndexController@blog')->where(['bid' => '[0-9]+']);

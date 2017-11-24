@@ -30,7 +30,6 @@
             <li @if(isset($menu) && $menu == 'blog@list')class="am-active" @endif><a href="{{ URL('admin/blog/list') }}">修改/删除博客</a></li>
             <li @if(isset($menu) && $menu == 'blog@type')class="am-active" @endif><a href="{{ URL('admin/type/edit') }}">分类管理</a></li>
             <li><a href="#">评论管理</a></li>
-            <li><a href="#">参数设置</a></li>
             <li><a href="#">退出登录</a></li>
         </ul>
     </div>

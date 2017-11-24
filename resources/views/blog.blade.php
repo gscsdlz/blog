@@ -49,11 +49,37 @@
 @section('commit')
     <hr/>
     <div class="am-g">
+        <div class="am-u-md-6 am-u-md-centered">
+            <ul class="am-comments-list am-comments-list-flip">
+                <li class="am-comment">
+                    <a href="#link-to-user-home">
+                        <img src="" alt="" class="am-comment-avatar" width="48" height="48"/>
+                    </a>
+
+                    <div class="am-comment-main">
+                        <header class="am-comment-hd">
+                            <!--<h3 class="am-comment-title">评论标题</h3>-->
+                            <div class="am-comment-meta">
+                                <a href="#link-to-user" class="am-comment-author">某人</a>
+                                评论于 <time datetime="2013-07-27T04:54:29-07:00" title="2013年7月27日 下午7:54 格林尼治标准时间+0800">2014-7-12 15:30</time>
+                            </div>
+                        </header>
+
+                        <div class="am-comment-bd">
+                            ...
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="am-g">
         <div class="am-u-md-4 am-u-md-centered">
             <form class="am-form">
                 <div class="am-form-group">
                     <label class="am-form-label">电子邮箱</label>
-                    <input type="email" class="am-form-field" value="" placeholder="电子邮件仅用于通知您我的回复"/>
+                    <input type="email" class="am-form-field" value="" placeholder="电子邮件仅用于通知您我的回复 显示时 不完全显示"/>
                 </div>
                 <div class="am-form-group">
                     <label class="am-form-label">留言内容</label>

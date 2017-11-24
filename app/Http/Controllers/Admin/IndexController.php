@@ -8,7 +8,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Model\SettingModel;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
@@ -33,7 +33,6 @@ class IndexController extends Controller
 
     public function checkEmail(Request $request)
     {
-        $set = new SettingModel();
         $lastTime = Session::get('lastCheckTime', null);
 
         if ( !is_null($lastTime) && (time() - $lastTime < 60) ) {   //超时定义为60秒
@@ -42,7 +41,7 @@ class IndexController extends Controller
         }
         Session::put('lastCheckTime', time());
         $email = $request->get('email');
-        if($email != $set->adminEmail) {
+        if($email != confid('blog.adminEmail')) {
             return response()->json(['status' => false, 'info' => 'EError']); //Email Error
         } else {
             $vcode = substr(md5(rand(10000, 99999)), rand(0, 20), rand(6, 10));

@@ -48,7 +48,7 @@
         var _token = "{{ csrf_token() }}"
         $(document).ready(function () {
             $(".am-icon-trash").click(function () {
-                var id = $(this).parent().parent().children().eq(0).html();
+                var id = $(this).parent().parent().children().eq(0).children().eq(0).html();
                 $("#info").html("删除不可逆，建议使用隐藏功能！确认删除吗？");
                 $("#confirm").modal({
                     onConfirm:function(){

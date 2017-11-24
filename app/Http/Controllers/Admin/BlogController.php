@@ -87,6 +87,6 @@ class BlogController extends Controller
     {
         $bid = $request->get('bid');
         BlogModel::del($bid);
-        return response()->json(['status'=>true]);
+        return response()->json(['status'=>false]);
     }
 }
