@@ -1,4 +1,7 @@
 @extends('layout')
+@section('title')
+    所有分类
+@endsection
 @section('main')
     <div data-am-widget="titlebar" class="am-titlebar am-titlebar-default" >
         <h2 class="am-titlebar-title ">

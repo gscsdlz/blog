@@ -17,6 +17,8 @@ Route::get('all_type', 'IndexController@type_list')->where(['page' => '[0-9]*'])
 Route::get('all/{page?}', 'IndexController@blog_list')->where(['page' => '[0-9]*']);
 Route::get('type/{type}/{page?}', 'IndexController@blog_types')->where(['page' => '[0-9]*']);
 Route::get('blog/{bid}', 'IndexController@blog')->where(['bid' => '[0-9]+']);
+Route::post('comments','IndexController@comments');
+
 Route::get('file/get_markdown/{fname}', function($fname){
    return Storage::get('public/blog/md_file/'.$fname);
 });

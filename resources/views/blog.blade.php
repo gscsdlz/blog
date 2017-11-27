@@ -79,14 +79,34 @@
             <form class="am-form">
                 <div class="am-form-group">
                     <label class="am-form-label">电子邮箱</label>
-                    <input type="email" class="am-form-field" value="" placeholder="电子邮件仅用于通知您我的回复 显示时 不完全显示"/>
+                    <input type="email" id="email" class="am-form-field" value="" placeholder="电子邮件仅用于通知您我的回复 显示时 不完全显示"/>
                 </div>
                 <div class="am-form-group">
                     <label class="am-form-label">留言内容</label>
-                    <textarea class="am-form-field" rows="4" cols="4"></textarea>
+                    <textarea class="am-form-field" id="text" rows="4" cols="4"></textarea>
                 </div>
-                <button class="am-btn am-btn-primary" type="button">发表留言</button>
+                <button class="am-btn am-btn-primary" type="button" id="submit">发表留言</button>
             </form>
         </div>
     </div>
+    <script>
+        $(document).ready(function(){
+            $("#submit").click(function(){
+                var email = $("#email").val();
+                var text = $("#text").val();
+
+                if(text.length == 0) {
+                   alert("留言内容不可为空");
+                } else {
+                    $.post("{{ URL("comments") }}", {email:email, text:text, _token:"{{ csrf_token() }}"}, function (data) {
+                        if(data.status == true)
+                            alert("提交成功")
+                        else
+                            alert("提交失败")
+                    })
+                }
+
+            })
+        })
+    </script>
 @endsection

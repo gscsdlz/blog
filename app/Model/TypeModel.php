@@ -29,7 +29,7 @@ class TypeModel
             foreach ($res as $t) {
                 //Types:XXXX
                 $arr = explode(":", $t);
-                $nums = $this->redis->scard('Types:' . $arr[1]);
+                $nums = $this->redis->llen('Types:' . $arr[1]);
                 $this->types[] = [$arr[1], $nums];
             }
         }
@@ -57,15 +57,15 @@ class TypeModel
 
     public function add($name)
     {
-        $this->redis->exists('Types:'.$name);
-        $this->redis->sadd('Types:'.$name, '-1');
+        if($this->redis->llen('Types:'.$name) == 0)
+            $this->redis->lpush('Types:'.$name, -1);
         //redis中不予许空集合 这里加入-1 区分
     }
 
     public function del($name)
     {
-        $arr = $this->redis->smembers('Types:'.$name);
-        if(count($arr) == 0 || (count($arr) == 1 && $arr[0] == "-1")) {
+        $len = $this->redis->llen('Types:'.$name);
+        if($len == 1 && $this->redis->lindex('Types:'.$name, 0) == "-1") {
             $this->redis->del('Types:' . $name);
             return true;
         } else {

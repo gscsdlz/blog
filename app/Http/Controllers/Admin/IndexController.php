@@ -25,9 +25,9 @@ class IndexController extends Controller
         if(Session::has('username')) {
             return view('admin.index');
         }
-        $set = new SettingModel();
+
         return view('admin.login', [
-           'adminEmail' => $set->adminEmail,
+           'adminEmail' => config('blog.adminEmail'),
         ]);
     }
 

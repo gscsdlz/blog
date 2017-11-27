@@ -95,8 +95,8 @@ class BlogModel
             $this->redis->hset('BlogID:'.$this->blogID, 'updateTime', time());
             $this->redis->hincrby('BlogID:'.$this->blogID, 'updateCount', 1);
             if(!is_null($this->oldType) && $this->oldType != $this->type) {
-                $this->redis->srem('Types:'.$this->oldType, $this->blogID);
-                $this->redis->sadd('Types:'.$this->type, $this->blogID);
+                $this->redis->lrem('Types:'.$this->oldType, 0, $this->blogID);
+                $this->redis->rpush('Types:'.$this->type, $this->blogID);
             }
             Storage::put('public/blog/md_file/'.$this->mdtextPath, $this->mdtext);
 
@@ -121,7 +121,9 @@ class BlogModel
                 'visible' => 1,
             ));
             $this->redis->incr('primaryKey');  //更新伪外键
-            $this->redis->sadd('Types:'.$this->type, $pk, '-1'); //redis中不允许空集合 加入-1区分
+            if($this->redis->llen('Types:'.$this->type) == 0)
+                $this->redis->lpush('Types:'.$this->type, $pk); //redis中不允许空列表 加入-1区分
+            $this->redis->lpush('Types:'.$this->type, $pk);
             $this->redis->rpush('BlogIDIndex', $pk);
 
             return $pk;
@@ -147,18 +149,24 @@ class BlogModel
 
     public function list_withTypes($type, $page)
     {
-        $lists = $this->redis->smembers('Types:'.$type);
-        $lists = array_chunk($lists, 20);
+        $pms = config('blog.blogPage');
+        $len = $this->redis->llen('Types:'.$type);
+        if($len == 1)
+            return [[], 0];
 
-        if(isset($lists[$page - 1])) {
-            $arr = [];
-            foreach ($lists[$page - 1] as $l) {
-                if($l != -1)
+        $total = (int)(($len - 1) / $pms) + 1;
+        if($page > $total)
+            $page = $total;
+        $pl = ($page - 1) * $pms;
+        $pr = $pl + $pms + 1;  //多取一位 避开之前的-1
+
+        $lists = $this->redis->lrange('Types:'.$type, $pl, $pr);
+        $arr = [];
+        foreach ($lists as $l) {
+            if($l != -1)
                 $arr[$l] = $this->redis->hgetall('BlogID:'.$l);
-            }
-            return $arr;
         }
-        return [];
+        return [$arr, $total];
     }
 
     public static function del($bid) {
