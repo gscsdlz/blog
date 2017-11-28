@@ -10,10 +10,9 @@ namespace App\Http\Controllers;
 
 
 use App\Model\BlogModel;
-use App\Model\commentModel;
+use App\Model\CommentModel;
 use App\Model\TypeModel;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Session;
 
 class IndexController extends Controller
@@ -37,6 +36,7 @@ class IndexController extends Controller
     public function blog(Request $request, $bid)
     {
         $blog = new BlogModel($bid);
+        $lists = CommentModel::get_comments($bid);
         if(!is_null($blog->blogID) && Session::get('viewID', -1) != $blog->blogID){
             BlogModel::incView($bid);
             Session::put('viewID', $blog->blogID);
@@ -45,6 +45,7 @@ class IndexController extends Controller
             'blog' => $blog,
             'navbar' => $this->navbar,
             'neededitorMD' => true,
+            'comments' => $lists,
         ]);
     }
 
@@ -93,8 +94,8 @@ class IndexController extends Controller
         $email = $request->get('email', null);
         $text = $request->get('text', null);
 
-        if(!is_null($text) || strlen($text) != 0) {
-            commentModel::insert($bid, $email, $text, time());
+        if(!is_null($text) || (strlen($text) != 0 && strlen($text) < 1000)) {
+            CommentModel::insert($bid, $email, htmlspecialchars($text), time());
             return response()->json(['status' => true]);
         }
     }

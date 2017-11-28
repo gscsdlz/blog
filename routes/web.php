@@ -17,6 +17,7 @@ Route::get('all_type', 'IndexController@type_list')->where(['page' => '[0-9]*'])
 Route::get('all/{page?}', 'IndexController@blog_list')->where(['page' => '[0-9]*']);
 Route::get('type/{type}/{page?}', 'IndexController@blog_types')->where(['page' => '[0-9]*']);
 Route::get('blog/{bid}', 'IndexController@blog')->where(['bid' => '[0-9]+']);
+
 Route::post('comments','IndexController@comments');
 
 Route::get('file/get_markdown/{fname}', function($fname){
@@ -43,7 +44,9 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin', 'namespace' => 'Admi
     Route::post('type/navbar_edit', 'TypeController@navbar');
     Route::post('type/del', 'TypeController@del');
 
-
-
+    Route::get('comments/list', 'CommentController@list_all');
+    Route::post("comments/get", 'CommentController@get');
+    Route::any("comments/del", 'CommentController@del');
+    Route::post("comments/insert", 'CommentController@insert');
 
 });

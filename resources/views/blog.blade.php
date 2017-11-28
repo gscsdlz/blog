@@ -51,25 +51,28 @@
     <div class="am-g">
         <div class="am-u-md-6 am-u-md-centered">
             <ul class="am-comments-list am-comments-list-flip">
-                <li class="am-comment">
-                    <a href="#link-to-user-home">
-                        <img src="" alt="" class="am-comment-avatar" width="48" height="48"/>
-                    </a>
-
+                @foreach($comments as $c)
+                <li class="am-comment @if(isset($c['isAdmin']) && $c['isAdmin'] == 1) am-comment-flip am-comment-highlight @endif" >
                     <div class="am-comment-main">
                         <header class="am-comment-hd">
-                            <!--<h3 class="am-comment-title">评论标题</h3>-->
                             <div class="am-comment-meta">
-                                <a href="#link-to-user" class="am-comment-author">某人</a>
-                                评论于 <time datetime="2013-07-27T04:54:29-07:00" title="2013年7月27日 下午7:54 格林尼治标准时间+0800">2014-7-12 15:30</time>
+                                <a href="#" class="am-comment-author">
+                                    @if(isset($c['isAdmin']) && $c['isAdmin'] == 1)
+                                        {{ $c['email'] }} 回复于 <time>{{ $c['time'] }}</time>
+                                    @else
+                                        {{ substr($c['email'], 0, 2) }}********{{ substr($c['email'], strlen($c['email']) - 3) }}
+                                        评论于 <time>{{  $c['time'] }}</time>
+                                    @endif</a>
+
                             </div>
                         </header>
 
                         <div class="am-comment-bd">
-                            ...
+                            {{ $c ['text'] }}
                         </div>
                     </div>
                 </li>
+                @endforeach
             </ul>
         </div>
     </div>
