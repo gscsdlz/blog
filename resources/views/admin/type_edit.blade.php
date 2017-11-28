@@ -1,4 +1,5 @@
 @extends('admin.layout')
+@section('title')分类管理@endsection
 @section('main')
     <div class="am-g">
         <div class="am-u-md-4 am-u-md-offset-2">

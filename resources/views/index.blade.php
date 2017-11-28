@@ -44,68 +44,57 @@
             <div data-am-widget="slider" class="am-slider am-slider-c3" data-am-slider='{&quot;controlNav&quot;:false}' >
                 <ul class="am-slides">
                     <li>
-                        <img src="{{ URL('i/b1.jpg') }}">
-                        <div class="am-slider-desc"><div class="am-slider-counter"><span class="am-active">1</span>/4</div>远方 有一个地方 那里种有我们的梦想</div>
+                        <img src="{{ URL('i/b1.jpg') }}" width="1200px" height="600px">
+                        <div class="am-slider-desc"><div class="am-slider-counter"><span class="am-active">1</span>/4</div>梦想就在远方</div>
 
                     </li>
                     <li>
-                        <img src="http://s.amazeui.org/media/i/demos/bing-2.jpg">
-                        <div class="am-slider-desc"><div class="am-slider-counter"><span class="am-active">2</span>/4</div>某天 也许会相遇 相遇在这个好地方</div>
+                        <img src="{{ URL('i/b2.jpg') }}"  width="1200px" height="600px">
+                        <div class="am-slider-desc"><div class="am-slider-counter"><span class="am-active">2</span>/4</div>霜叶红于二月花</div>
 
                     </li>
                     <li>
-                        <img src="http://s.amazeui.org/media/i/demos/bing-3.jpg">
-                        <div class="am-slider-desc"><div class="am-slider-counter"><span class="am-active">3</span>/4</div>不要太担心 只因为我相信 终会走过这条遥远的道路</div>
+                        <img src="{{ URL('i/b3.jpg') }}"  width="1200px" height="600px">
+                        <div class="am-slider-desc"><div class="am-slider-counter"><span class="am-active">3</span>/4</div>带你住进城堡</div>
 
                     </li>
                     <li>
-                        <img src="http://s.amazeui.org/media/i/demos/bing-4.jpg">
-                        <div class="am-slider-desc"><div class="am-slider-counter"><span class="am-active">4</span>/4</div>OH PARA PARADISE 是否那么重要 你是否那么地遥远</div>
+                        <img src="{{ URL('i/b4.jpg') }}"  width="1200px" height="600px">
+                        <div class="am-slider-desc"><div class="am-slider-counter"><span class="am-active">4</span>/4</div>Dream Liner梦想航线</div>
 
                     </li>
                 </ul>
             </div>
         </div>
         <div class="am-u-md-2">
-            <canvas id="rightCanvas" width="100%" height="100%"></canvas>
+            <div class="am-panel am-panel-default">
+                <div class="am-panel-hd">
+                    <h2 class="am-text-center "><span>博主简介</span></h2>
+                </div>
+                <div class="am-panel-bd">
+                    <img class="am-radius" src="{{ URL("images/header.jpg") }}" width="100%" alt="about me" >
+                    <h2 class="am-text-center"><i><u>{{ config('blog.adminName') }}</u></i></h2>
+                    <p>
+                        <?php $str = explode(':', config('blog.labels')) ?>
+                        @foreach($str as $s)
+                            <span class="am-badge am-badge-primary am-radius">{{ $s }}</span>
+                        @endforeach
+                    </p>
+                    <p>{{ config('blog.aboutMe') }}</p>
+                </div>
+            </div>
         </div>
+        <!--<div class="am-u-md-2">
+            <div class="am-panel am-panel-default">
+                <div class="am-panel-bd">
+                    <h2 class="am-text-center"><span>捐赠</span></h2>
+                    <img src="{{ URL('images/web/qrcode.png') }}" width="100%"/>
+                    <p>各位大佬如果觉得本博客对您有帮助，不如来包辣条？￣ω￣=</p>
+                </div>
+            </div>
+        </div>-->
     </div>
     <hr/>
-<div class="am-g">
-    <div class="am-u-md-12">
-        <div class="am-g">
-            <div class="am-u-md-2">
-                <div class="am-panel am-panel-default">
-                    <div class="am-panel-hd">
-                        <h2 class="am-text-center "><span>博主简介</span></h2>
-                    </div>
-                    <div class="am-panel-bd">
-                        <img class="am-radius" src="{{ URL("images/header.jpg") }}" width="100%" alt="about me" >
-                        <h2 class="am-text-center"><i><u>{{ config('blog.adminName') }}</u></i></h2>
-                        <p>
-                            <?php $str = explode(':', config('blog.labels')) ?>
-                            @foreach($str as $s)
-                            <span class="am-badge am-badge-primary am-radius">{{ $s }}</span>
-                            @endforeach
-                        </p>
-                        <p>{{ config('blog.aboutMe') }}</p>
-                    </div>
-                </div>
-            </div>
-            <div class="am-u-md-2">
-                <div class="am-panel am-panel-default">
-                    <div class="am-panel-bd">
-                        <h2 class="am-text-center"><span>捐赠</span></h2>
-                        <img src="{{ URL('images/web/qrcode.png') }}" width="100%"/>
-                        <p>各位大佬如果觉得本博客对您有帮助，不如来包辣条？￣ω￣=</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
-    </div>
-</div>
 <footer data-am-widget="footer" class="am-footer am-footer-default" data-am-footer="{  }">
     <div class="am-footer-miscs ">
         <p>基于PHP-Laravel框架和Redis的博客，不使用MySQL，前端使用了AmazeUI的模板。</p>

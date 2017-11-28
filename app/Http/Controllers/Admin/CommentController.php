@@ -55,10 +55,12 @@ class CommentController extends  Controller
 
         if($email == 1) {
             $res = CommentModel::get_info($bid, $index);
+
             Mail::send('mail.reply', ['comment' => $res['text'], 'reply' => $text], function($message) use ($res) {
                 $to = $res['email'];
                 $message->to($to)->subject("留言回复");
             });
+
             if(empty(Mail::failures()))
                 return response()->json(['status' => true]);
             else
