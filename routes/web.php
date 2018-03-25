@@ -24,6 +24,10 @@ Route::get('file/get_markdown/{fname}', function($fname){
    return Storage::get('public/blog/md_file/'.$fname);
 });
 
+Route::get('file/{fname}', function($fname){
+    return response()->download('/var/www/html/blog/storage/app/public/file/'.$fname);
+});
+
 Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function(){
     Route::get('/', 'IndexController@login');
     Route::post('checkEmail', 'IndexController@checkEmail');
