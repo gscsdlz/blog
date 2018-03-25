@@ -10,17 +10,17 @@
     <meta name="renderer" content="webkit">
     <meta http-equiv="Cache-Control" content="no-siteapp"/>
     <link rel="icon" type="image/png" href="{{ URL::asset('/i/favicon.ico') }}">
-    <link rel="stylesheet" href="{{ URL::asset('/css/amazeui.min.css') }}">
-    <script src="{{ URL::asset("/js/jquery.min.js") }}"></script>
-    <script src="{{ URL::asset("/js/amazeui.min.js") }}"></script>
+    <link href="https://cdn.bootcss.com/amazeui/2.4.2/css/amazeui.min.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/amazeui/2.4.2/js/amazeui.min.js"></script>
     @if(isset($neededitorMD))
     <link rel="stylesheet" href="{{ URL::asset('/ext/meditor/css/editormd.preview.min.css') }}">
-    <script src="{{ URL('ext/meditor/lib/marked.min.js') }}"></script>
-    <script src="{{ URL('ext/meditor/lib/prettify.min.js') }}"></script>
-    <script src="{{ URL('ext/meditor/lib/raphael.min.js') }}"></script>
-    <script src="{{ URL('ext/meditor/lib/underscore.min.js') }}"></script>
-    <script src="{{ URL('ext/meditor/lib/sequence-diagram.min.js') }}"></script>
-    <script src="{{ URL('ext/meditor/lib/flowchart.min.js') }}"></script>
+    <script src="{{ URL('ext/meditor/lib/marked.min.js')}}"></script>
+    <script src="https://cdn.bootcss.com/prettify/r298/prettify.min.js"></script>
+    <script src="https://cdn.bootcss.com/raphael/2.2.7/raphael.min.js"></script>
+    <script src="https://cdn.bootcss.com/underscore.js/1.8.3/underscore-min.js"></script>
+    <script src="https://cdn.bootcss.com/js-sequence-diagrams/1.0.6/sequence-diagram-min.js"></script>
+    <script src="https://cdn.bootcss.com/flowchart/1.8.0/flowchart.min.js"></script>
     <script src="{{ URL('ext/meditor/lib/jquery.flowchart.min.js') }}"></script>
     <script src="{{ URL('ext/meditor/editormd.min.js') }}"></script>
     @endif
@@ -61,11 +61,9 @@
     <div class="am-u-md-2 am-u-end" id="aboutMe">
         @yield('rightArea')
         <div class="am-panel am-panel-default">
-            <div class="am-panel-hd">
-                <h2 class="am-text-center "><span>博主简介</span></h2>
-            </div>
             <div class="am-panel-bd">
-                <img class="am-radius" src="{{ URL("images/header.jpg") }}" width="100%" alt="about me" >
+                <h2 style="text-align:center;margin:0 auto;position: relative;top: -30px;background-color:white;width:120px"><span>博主简介</span></h2>
+                <img class="am-radius" src="https://wx2.sinaimg.cn/mw1024/006chy0Cgy1fo6hh7aeybj318g0p00tx.jpg" width="100%" alt="about me" >
                 <h2 class="am-text-center"><i><u>{{ config('blog.adminName') }}</u></i></h2>
                 <p>
                     <?php $str = explode(':', config('blog.labels')) ?>
@@ -78,8 +76,7 @@
         </div>
         <div class="am-panel am-panel-default">
             <div class="am-panel-bd">
-                <h2 class="am-text-center"><span>捐赠</span></h2>
-                <img src="{{ URL('images/web/qrcode.png') }}" width="100%"/>
+                <h2 style="text-align:center;margin:0 auto;position: relative;top: -30px;background-color:white;width:120px"><span>捐赠</span></h2>                <img src="{{ URL('images/web/qrcode.png') }}" width="100%"/>
                 <p>各位大佬如果觉得本博客对您有帮助，不如来包辣条？￣ω￣=</p>
             </div>
         </div>
@@ -90,6 +87,7 @@
     <div class="am-footer-miscs ">
         <p>基于PHP-Laravel框架和Redis的博客，不使用MySQL，前端使用了AmazeUI的模板。</p>
         <p>服务器时间:{{ date('Y-m-d H:i:s', time()) }} 执行耗时:{{ printf("%0.3f", microtime(true) - LARAVEL_START) }}</p>
+        <p>蜀ICP备17044274</p>
     </div>
 </footer>
 
