@@ -139,11 +139,13 @@ class BlogModel
         $pl = ($page - 1) * 20;
         $pr = $pl + 20;
 
-        $lists = $this->redis->lrange('BlogIDIndex', $pl, $pr);
+        $lists = $this->redis->lrange('BlogIDIndex', 0, $this->redis->llen('BlogIDIndex'));
+        $lists = array_reverse($lists);
         $arr = [];
         foreach ($lists as $l) {
             $arr[$l] = $this->redis->hgetall('BlogID:'.$l);
         }
+
         return [$arr, $total];
     }
 
@@ -174,7 +176,7 @@ class BlogModel
         $path = $redis->hget('BlogID:'.$bid, 'mdtextPath');
         $type = $redis->hget('BlogID:'.$bid, 'type');
         Storage::delete('public/blog/md_file/'.$path);
-        $redis->srem('Types:'.$type, $bid);
+        $redis->lrem('Types:'.$type, '0', $bid);
         $redis->lrem('BlogIDIndex', '0', $bid);
         $redis->del('BlogID:'.$bid);
     }
