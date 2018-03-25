@@ -60,6 +60,10 @@
     </div>
     <script>
         $(document).ready(function () {
+            window.onbeforeunload = function() {
+                localStorage.removeItem("markdown_str");
+                return "";
+            }
             var editor = editormd({
                 id   : "editormd",
                 path : "{{ URL('ext/meditor/lib/') }}/",
@@ -98,6 +102,8 @@
                                 if(data.status == true) {
                                     $("#info").html("保存成功！");
                                     $("#alert").modal();
+                                    //保存并且成功清除本地缓存
+                                    localStorage.removeItem('markdown_str');
                                     @if(!isset($bid))
                                     setTimeout(function(){
                                         window.location.href = "{{ URL('admin/blog/edit') }}/" + data.blogID;
@@ -125,12 +131,17 @@
                     }
                 },
                 onload : function() {
-                    @if(isset($blog))
                     var target = this;
-                    $.get("{{ URL('file/get_markdown/'.$blog->mdtextPath) }}", function(data) {
-                        target.setMarkdown(data);
-                    })
+                    @if(isset($blog))
 
+
+                    $.get("{{ URL('file/get_markdown/'.$blog->mdtextPath) }}", function(data) {
+                        var str = localStorage.getItem('markdown_str');
+                        if(str == null)
+                            target.setMarkdown(data)
+                        else if(str.length != 0 )
+                            target.setMarkdown(str);
+                    })
                     @endif
                 }
             });
@@ -147,7 +158,11 @@
                     }
                 })
             })
-
+            @if(isset($blog))
+            window.setInterval(function(){
+                localStorage.setItem('markdown_str', editor.getMarkdown());
+            }, 5000);
+            @endif
 
         })
     </script>
