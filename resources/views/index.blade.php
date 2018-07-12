@@ -3,16 +3,16 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="description" content="基于Redis、Laravel的NoSQL博客">
-    <meta name="keywords" content="博客,Redis,Laravel,NoSQL">
+    <meta name="description" content="gscsdlz的博客">
+    <meta name="keywords" content="gscsdlz的博客">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <title>A-LPR Blog gscsdlz的博客</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="Cache-Control" content="no-siteapp"/>
     <link rel="icon" type="image/png" href="{{ URL::asset('/i/favicon.ico') }}">
-    <link href="https://cdn.bootcss.com/amazeui/2.4.2/css/amazeui.min.css" rel="stylesheet">
-    <script src="https://cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
-    <script src="https://cdn.bootcss.com/amazeui/2.4.2/js/amazeui.min.js"></script>
+    <link href="{{ URL::asset('/css/amazeui.min.css') }}" rel="stylesheet">
+    <script src="{{ URL::asset('/js/jquery.min.js') }}"></script>
+    <script src="{{ URL::asset('/js/amazeui.min.js') }}"></script>
 </head>
 <body>
 <header class="am-topbar">

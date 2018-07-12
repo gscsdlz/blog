@@ -41,7 +41,7 @@ class IndexController extends Controller
         }
         Session::put('lastCheckTime', time());
         $email = $request->get('email');
-        if($email != confid('blog.adminEmail')) {
+        if($email != config('blog.adminEmail')) {
             return response()->json(['status' => false, 'info' => 'EError']); //Email Error
         } else {
             $vcode = substr(md5(rand(10000, 99999)), rand(0, 20), rand(6, 10));

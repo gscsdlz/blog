@@ -87,9 +87,11 @@ class TypeModel
 
     }
 
-    public function pages($pl, $pr)
+    public function pages()
     {
-        $lists = $this->redis->lrange('BlogIDIndex', $pl, $pr);
+        $len = $this->redis->llen('BlogIDIndex');
+
+        $lists = $this->redis->lrange('BlogIDIndex', 0, $len - 1);
         $arr = [];
         foreach ($lists as $l) {
             $arr[$l] = $this->redis->hgetall('BlogID:'.$l);

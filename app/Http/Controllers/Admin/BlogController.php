@@ -72,11 +72,9 @@ class BlogController extends Controller
         return response()->json(['status' => true, 'blogID' => $bid]);
     }
 
-    public function list_blog(Request $request, $page = 1)
+    public function list_blog(Request $request)
     {
-        $pl = ($page - 1) * 20;
-        $pr = $pl + 20;
-        $blogs = self::$type->pages($pl, $pr);
+        $blogs = self::$type->pages();
         return view('admin.blog_list', [
             'menu' => 'blog@list',
             'lists' => $blogs,
@@ -87,6 +85,6 @@ class BlogController extends Controller
     {
         $bid = $request->get('bid');
         BlogModel::del($bid);
-        return response()->json(['status'=>false]);
+        return response()->json(['status'=>true]);
     }
 }

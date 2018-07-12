@@ -3,24 +3,24 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="description" content="基于Redis、Laravel的NoSQL博客">
-    <meta name="keywords" content="博客,Redis,Laravel,NoSQL">
+    <meta name="description" content="gscsdlz的博客">
+    <meta name="keywords" content="gscsdlz的博客">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <title>@yield('title')</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="Cache-Control" content="no-siteapp"/>
     <link rel="icon" type="image/png" href="{{ URL::asset('/i/favicon.ico') }}">
-    <link href="https://cdn.bootcss.com/amazeui/2.4.2/css/amazeui.min.css" rel="stylesheet">
-    <script src="https://cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
-    <script src="https://cdn.bootcss.com/amazeui/2.4.2/js/amazeui.min.js"></script>
+    <link href="{{ URL::asset('/css/amazeui.min.css') }}" rel="stylesheet">
+    <script src="{{ URL::asset('/js/jquery.min.js') }}"></script>
+    <script src="{{ URL::asset('/js/amazeui.min.js') }}"></script>
     @if(isset($neededitorMD))
     <link rel="stylesheet" href="{{ URL::asset('/ext/meditor/css/editormd.preview.min.css') }}">
-    <script src="{{ URL('ext/meditor/lib/marked.min.js')}}"></script>
-    <script src="https://cdn.bootcss.com/prettify/r298/prettify.min.js"></script>
-    <script src="https://cdn.bootcss.com/raphael/2.2.7/raphael.min.js"></script>
-    <script src="https://cdn.bootcss.com/underscore.js/1.8.3/underscore-min.js"></script>
-    <script src="https://cdn.bootcss.com/js-sequence-diagrams/1.0.6/sequence-diagram-min.js"></script>
-    <script src="https://cdn.bootcss.com/flowchart/1.8.0/flowchart.min.js"></script>
+    <script src="{{ URL('ext/meditor/lib/marked.min.js') }}"></script>
+    <script src="{{ URL('ext/meditor/lib/prettify.min.js') }}"></script>
+    <script src="{{ URL('ext/meditor/lib/raphael.min.js') }}"></script>
+    <script src="{{ URL('ext/meditor/lib/underscore-min.js') }}"></script>
+    <script src="{{ URL('ext/meditor/lib/sequence-diagram-min.js') }}"></script>
+    <script src="{{ URL('ext/meditor/lib/flowchart.min.js') }}"></script>
     <script src="{{ URL('ext/meditor/lib/jquery.flowchart.min.js') }}"></script>
     <script src="{{ URL('ext/meditor/editormd.min.js') }}"></script>
     @endif
