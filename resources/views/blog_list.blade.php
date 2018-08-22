@@ -12,7 +12,7 @@
                 @if(count($arr) > 0)
                 @foreach($arr as $key => $blog)
                     <li class="am-g am-list-item-dated">
-                        <a href="{{ URL('blog/'.$key) }}" class="am-list-item-hd ">{{ $blog['title'] }}</a>
+                        <a href="{{ URL('blog/'.str_replace(' ', '+', strtolower($blog['title']))) }}" class="am-list-item-hd ">{{ $blog['title'] }}</a>
                         <span class="am-list-date">{{ $blog['type'] }} | {{ date('Y-m-d H:i', $blog['time']) }} | <span class="am-icon am-icon-eye"></span> {{ $blog['view'] }}</span>
                     </li>
                 @endforeach
