@@ -18,8 +18,8 @@
     <script src="{{ URL('ext/meditor/lib/marked.min.js') }}"></script>
     <script src="{{ URL('ext/meditor/lib/prettify.min.js') }}"></script>
     <script src="{{ URL('ext/meditor/lib/raphael.min.js') }}"></script>
-    <script src="{{ URL('ext/meditor/lib/underscore-min.js') }}"></script>
-    <script src="{{ URL('ext/meditor/lib/sequence-diagram-min.js') }}"></script>
+    <script src="{{ URL('ext/meditor/lib/underscore.min.js') }}"></script>
+    <script src="{{ URL('ext/meditor/lib/sequence-diagram.min.js') }}"></script>
     <script src="{{ URL('ext/meditor/lib/flowchart.min.js') }}"></script>
     <script src="{{ URL('ext/meditor/lib/jquery.flowchart.min.js') }}"></script>
     <script src="{{ URL('ext/meditor/editormd.min.js') }}"></script>
