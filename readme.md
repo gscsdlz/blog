@@ -2,6 +2,7 @@
 ## 简介
 采用Laravel5.4和Redis开发的NoSQL博客，除此之外并无特殊，纯粹为了学习
 Laravel框架和Redis。前端采用AmazeUI。
+[地址](http://www.aclrp.com)
 ## 基本功能
 - 单用户博客
 - 首页支持简易的自定义配置
